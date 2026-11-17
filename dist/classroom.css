@@ -1,0 +1,25 @@
+/* Жетістіктер, оқушы профилі және сертификат */
+.ach-grid-wrap{margin:24px 0;padding:20px;border:1px solid #dfe5ec;border-radius:14px;background:#fff}
+.ach-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.ach-head h3{margin:0;font-size:21px;color:#21395a}
+.ach-head span{font-weight:800;color:#2f6d58;background:#e8f4ee;border-radius:20px;padding:4px 12px}
+.ach-grid{list-style:none;padding:0;margin:16px 0 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.ach-grid li{display:grid;grid-template-columns:44px 1fr;grid-template-rows:auto auto;column-gap:10px;align-items:center;padding:12px;border-radius:12px;border:1px solid #e3e8ee;background:#f8fafc}
+.ach-grid li span{grid-row:1/3;font-size:28px;text-align:center}
+.ach-grid li strong{font-size:14px;color:#21395a;line-height:1.25}
+.ach-grid li small{font-size:12px;color:#6c7886;line-height:1.35}
+.ach-grid li.on{background:linear-gradient(135deg,#fff8e6,#fff);border-color:#e7c98c}
+.ach-grid li.off{opacity:.62}
+.ach-grid li.off span{filter:grayscale(1)}
+.student-card{margin:18px 0;padding:20px;border:1px solid #dfe5ec;border-radius:14px;background:#fff}
+.student-card h3{margin:0 0 4px;color:#21395a}
+.student-row{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin:10px 0 4px}
+.student-row label{display:grid;gap:6px;font-size:13px;font-weight:700;color:#3b4d63}
+.student-row input{font:inherit;font-size:15px;padding:11px 12px;border:1px solid #cdd5df;border-radius:9px;background:#fbfcfe;color:#21395a}
+.results-actions{align-items:center}
+.results-actions #download-results{margin:0}
+.cert-dialog{width:min(980px,calc(100% - 24px));max-height:94dvh;overflow:auto;border:1px solid #cbd7e5;border-radius:16px;background:#f6f2e7;color:#193c32;padding:22px}
+.cert-dialog::backdrop{background:#09251dd9;backdrop-filter:blur(4px)}
+.cert-dialog h2{margin:0 0 6px}
+.cert-dialog canvas{width:100%;height:auto;display:block;border-radius:8px;box-shadow:0 10px 30px #0003;margin:12px 0}
+@media(max-width:640px){.student-row{grid-template-columns:1fr}}

@@ -1,0 +1,113 @@
+/* Дала мұрасы · уақыт сызығы, карта, тұлғалар, сөздік, күн сұрағы, хронология */
+.explore-section>section{padding:26px}
+.x-tabs{display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--line,#dcd8c9);margin:18px 0 20px}
+.x-tab{border:0;background:none;font:inherit;font-weight:700;font-size:15px;padding:12px 16px;color:#5d6a78;border-bottom:3px solid transparent;cursor:pointer;margin-bottom:-1px}
+.x-tab[aria-selected=true]{color:#21395a;border-color:#c0643f}
+.x-tab:focus-visible,.x-chip:focus-visible,.x-marker:focus-visible{outline:3px solid #e7bf7d;outline-offset:2px}
+.x-note{font-size:13px;color:#5d6a78;line-height:1.6}
+.x-kicker{font-size:11px;letter-spacing:1.6px;font-weight:700;color:#c0643f}
+.x-tag{font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--era);border:1px solid color-mix(in srgb,var(--era) 40%,transparent);border-radius:20px;padding:2px 8px;margin-left:10px;vertical-align:2px}
+.x-chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
+.x-chip{font:inherit;font-size:13px;border:1px solid #cdd5df;background:#fff;color:#2b4260;border-radius:30px;padding:7px 13px;cursor:pointer}
+.x-chip::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--era,#2b4260);margin-right:6px;vertical-align:1px}
+.x-chip[aria-pressed=true]{background:#21395a;color:#fff;border-color:#21395a}
+.x-search,.x-select{width:100%;font:inherit;font-size:15px;padding:12px 14px;border:1px solid #cdd5df;border-radius:9px;background:#fff;color:#21395a;margin:4px 0 10px;box-sizing:border-box}
+.x-select{width:auto;margin:0}
+.x-round{width:40px;height:40px;border-radius:50%;border:1px solid #cdd5df;background:#fff;color:#21395a;font-size:14px;cursor:pointer}
+.x-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+
+/* Уақыт сызығы */
+.x-timeline-controls{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.x-timeline{list-style:none;margin:0;padding:34px 4px 18px;display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;position:relative;scrollbar-width:thin}
+.x-tl-item{flex:0 0 200px;scroll-snap-align:start;position:relative;padding-top:22px}
+.x-tl-item::before{content:"";position:absolute;left:-12px;right:0;top:7px;height:3px;background:var(--era)}
+.x-tl-dot{position:absolute;top:2px;left:12px;width:13px;height:13px;border-radius:50%;background:#fff;border:3px solid var(--era);box-sizing:border-box}
+.x-tl-era{position:absolute;top:-26px;left:0;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--era);white-space:nowrap}
+.x-tl-card{display:flex;flex-direction:column;gap:6px;min-height:128px;padding:14px;border-radius:10px;background:#fff;border:1px solid #dfe5ec;border-top:4px solid var(--era);text-decoration:none;color:#21395a;position:relative;transition:transform .15s,box-shadow .15s}
+.x-tl-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px #21395a1f}
+.x-tl-card small{font-size:12px;color:var(--era);font-weight:700}
+.x-tl-card strong{font-size:15px;line-height:1.35}
+.x-tl-role{font-size:12px;color:#6c7886;margin-top:auto}
+.x-tl-done{position:absolute;right:10px;top:10px;width:22px;height:22px;border-radius:50%;background:#2f6d58;color:#fff;font-size:12px;display:grid;place-items:center}
+
+/* Карта */
+.x-map-layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;align-items:start}
+.x-map{margin:0;border:1px solid #dfe5ec;border-radius:12px;overflow:hidden;background:#dbe8f1}
+.x-map svg{display:block;width:100%;height:auto;aspect-ratio:900/532}
+.x-zoom{display:flex;gap:6px;padding:8px;background:#fff;border-bottom:1px solid #dfe5ec}.x-zoom .x-chip::before{display:none}
+.x-map figcaption{font-size:11px;color:#5d6a78;background:#fff;padding:9px 12px;line-height:1.5}
+.x-map-country{font-size:12px;letter-spacing:2px;fill:#8d968b;font-weight:700}
+.x-map-country.main{font-size:22px;letter-spacing:9px;fill:#cbbb93}
+.x-marker{cursor:pointer;outline:none}
+.x-marker circle:first-child{stroke:#fff;stroke-width:2.5;transition:r .15s}
+.x-marker text{fill:#fff;font-size:11px;font-weight:700;pointer-events:none}
+.x-marker .x-marker-label{fill:#2b3b4e;font-size:12px;font-weight:600;paint-order:stroke;stroke:#f6efdcdd;stroke-width:4px;opacity:0;transition:opacity .15s}
+.x-marker .x-marker-label.always,.x-marker:hover .x-marker-label,.x-marker:focus .x-marker-label,.x-marker.active .x-marker-label{opacity:1}
+.x-marker:hover circle:first-child,.x-marker.active circle:first-child{r:16}
+.x-marker.seen circle:first-child{stroke:#2b3b4e}
+.x-map-side{background:#fff;border:1px solid #dfe5ec;border-radius:12px;padding:18px;min-height:200px}
+.x-map-side small{font-size:11px;letter-spacing:1.4px;color:#c0643f;font-weight:700}
+.x-map-side h3{margin:8px 0;font-size:22px;color:#21395a}
+.x-map-side p{font-size:14px;line-height:1.6}
+.x-map-chapters{list-style:none;padding:0;margin:14px 0}
+.x-map-chapters li{border-left:4px solid var(--era);padding:6px 10px;margin:8px 0;background:#f6f8fb;border-radius:0 6px 6px 0}
+.x-map-chapters span{display:block;font-size:12px;color:#6c7886}
+.x-map-chapters a{font-weight:700;color:#21395a}
+.x-map-count{font-weight:700;color:#2f6d58}
+
+/* Тұлғалар */
+.x-people{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.x-person{background:#fff;border:1px solid #dfe5ec;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:6px;border-left:5px solid var(--era)}
+.x-person-head{display:flex;gap:12px;align-items:center}
+.x-avatar{flex:0 0 46px;height:46px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--era) 16%,#fff);color:var(--era);font-weight:800;font-size:16px;border:2px solid color-mix(in srgb,var(--era) 45%,#fff)}
+.x-person h3{margin:0;font-size:16px;color:#21395a;line-height:1.3}
+.x-person small{color:#6c7886;font-size:12px}
+.x-person p{font-size:14px;line-height:1.6;margin:6px 0}
+.x-person-link{margin-top:auto;font-size:13px;font-weight:700;color:#315d8c}
+
+/* Сөздік */
+.x-letters{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0 14px}
+.x-letters a{min-width:30px;text-align:center;padding:5px 4px;border-radius:6px;background:#eef2f7;color:#21395a;font-weight:700;text-decoration:none;font-size:14px}
+.x-glossary{margin:0;display:grid;grid-template-columns:minmax(150px,240px) 1fr;border-top:1px solid #e3e8ee}
+.x-glossary dt,.x-glossary dd{padding:12px 6px;border-bottom:1px solid #e3e8ee;margin:0;scroll-margin-top:170px}
+.x-glossary dt{font-weight:800;color:#21395a;border-left:4px solid var(--era);padding-left:12px}
+.x-glossary dt .x-tag{display:block;margin:6px 0 0;width:max-content}
+.x-glossary dd{line-height:1.6;font-size:15px}
+
+/* Күн сұрағы мен хронология */
+.x-daily,.x-chrono{background:#fff;border:1px solid #dfe5ec;border-radius:14px;padding:22px}
+.x-daily-top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+.x-streak{font-size:13px;font-weight:700;color:#21395a;background:#f3efe2;border-radius:20px;padding:5px 12px}
+.x-daily-meta{display:block;margin-top:14px;color:#6c7886}
+.x-daily h3,.x-chrono h3{font-size:21px;line-height:1.4;color:#21395a;margin:8px 0 14px}
+.x-options{display:grid;gap:8px}
+.x-option{font:inherit;text-align:left;font-size:15px;line-height:1.5;border:1px solid #cdd5df;border-radius:10px;background:#f8fafc;color:#21395a;padding:14px 16px;cursor:pointer}
+.x-option:hover:not(:disabled){border-color:#315d8c;background:#eef3f9}
+.x-option.right,.x-chrono-card.right{border-color:#2f6d58;background:#e8f4ee}
+.x-option.wrong,.x-chrono-card.wrong{border-color:#b2453b;background:#fbecea}
+.x-option:disabled{cursor:default;opacity:1;color:#21395a}
+.x-feedback{margin-top:16px;border-radius:10px;padding:16px;line-height:1.6}
+.x-feedback.ok{background:#e8f4ee;border:1px solid #9cc9b2}
+.x-feedback.no{background:#fbf2e6;border:1px solid #e3c49a}
+.x-feedback p{margin:6px 0}
+.x-feedback a{font-weight:700;color:#315d8c}
+.x-chrono-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.x-chrono-card{font:inherit;position:relative;text-align:left;display:flex;flex-direction:column;gap:6px;padding:16px 14px 14px;min-height:110px;border:1px solid #cdd5df;border-top:4px solid var(--era);border-radius:10px;background:#f8fafc;color:#21395a;cursor:pointer}
+.x-chrono-card strong{font-size:15px;line-height:1.35;padding-right:30px}
+.x-chrono-card small{color:#6c7886;font-size:12px;margin-top:auto}
+.x-chrono-card.picked{background:#eef3f9;border-color:#315d8c;border-top-color:var(--era)}
+.x-chrono-card.picked.right{border-color:#2f6d58;background:#e8f4ee}.x-chrono-card.picked.wrong{border-color:#b2453b;background:#fbecea}
+.x-chrono-card.right .x-chrono-num{background:#2f6d58}.x-chrono-card.wrong .x-chrono-num{background:#b2453b}
+.x-chrono-num{position:absolute;right:10px;top:10px;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px}
+.x-chrono-card.picked .x-chrono-num{background:#315d8c;color:#fff}
+.x-chrono-card:disabled{cursor:default;color:#21395a}
+
+@media(max-width:860px){
+  .x-map-layout{grid-template-columns:1fr}
+  .x-glossary{grid-template-columns:1fr}
+  .x-glossary dt{border-bottom:0;padding-bottom:2px}
+  .x-glossary dd{padding-top:4px;padding-left:16px}
+  .explore-section>section{padding:18px}
+  .x-tl-item{flex-basis:170px}
+}
+@media (prefers-reduced-motion:reduce){.x-tl-card{transition:none}}

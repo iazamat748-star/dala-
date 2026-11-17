@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#173d33">
+<meta name="description" content="Дала мұрасы · мұғалім кабинеті: сынып есебі, жұмыс парақтары және сабақ жоспарлары.">
+<title>Мұғалім кабинеті · Дала мұрасы</title>
+<link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="features.css?v=2">
+<script src="settings.js?v=2"></script>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="teacher.css?v=3">
+<script defer src="history-data.js?v=1"></script>
+<script defer src="encyclopedia-data.js?v=1"></script>
+<script defer src="achievements.js?v=2"></script>
+<script defer src="teacher.js?v=2"></script>
+<script defer src="pwa.js?v=1"></script>
+</head>
+<body>
+<a class="skip" href="#main">Негізгі мазмұнға өту</a>
+<header class="t-top no-print"><div class="t-wrap">
+  <a class="t-brand" href="./"><svg aria-hidden="true" viewBox="0 0 40 40"><rect width="40" height="40" rx="11" fill="#173d33"/><path d="M8 27 20 11l12 16M13 27l7-9 7 9M10 30h20" fill="none" stroke="#e8c789" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Дала мұрасы</a>
+  <span class="t-badge">Мұғалім кабинеті</span>
+  <a class="t-back" href="./">← Оқушы бетіне</a>
+  <button class="settings-open" id="settings-open" type="button" aria-haspopup="dialog" title="Оқу баптаулары">Аа<span class="sr"> Баптаулар</span></button>
+</div></header>
+<main id="main" class="t-wrap">
+  <section class="t-hero no-print">
+    <p class="t-kicker">МҰҒАЛІМГЕ</p>
+    <h1>Сыныпты бақылау және сабаққа дайындық</h1>
+    <p>Оқушылардың нәтиже файлдарын жинап, сынып есебін көр. Кез келген дәуірге басып шығаруға дайын жұмыс парағын жаса. Дайын сабақ жоспарларын пайдалан. Барлық өңдеу осы браузерде жүреді, деректер ешқайда жіберілмейді.</p>
+  </section>
+  <nav class="t-tabs no-print" role="tablist" aria-label="Мұғалім құралдары">
+    <button role="tab" aria-selected="true" data-tab="report" type="button">📊 Сынып есебі</button>
+    <button role="tab" aria-selected="false" data-tab="sheets" type="button">📝 Жұмыс парақтары</button>
+    <button role="tab" aria-selected="false" data-tab="plans" type="button">📚 Сабақ жоспарлары</button>
+    <button role="tab" aria-selected="false" data-tab="howto" type="button">❓ Нұсқаулық</button>
+  </nav>
+
+  <section id="tab-report" class="t-panel" role="tabpanel">
+    <div class="t-drop no-print" id="drop">
+      <h2>Оқушы нәтижелерін жүкте</h2>
+      <p>Оқушылар «07 · Нәтиже және кері байланыс» бөлімінен <b>«Мұғалімге нәтиже файлы (.json)»</b> батырмасы арқылы файл жүктеп, саған жібереді. Барлық файлды бірден осы жерге сүйреп әкел немесе таңда.</p>
+      <label class="t-file"><input type="file" id="files" accept=".json,application/json" multiple> Файлдарды таңдау</label>
+      <button type="button" class="t-ghost" id="demo">Үлгі сыныппен көру</button>
+      <button type="button" class="t-ghost" id="clear" hidden>Тазалау</button>
+      <p id="load-status" class="t-note" role="status"></p>
+    </div>
+    <div id="report" hidden>
+      <div class="t-print-head print-only"><h2>Дала мұрасы · Сынып есебі</h2><p id="print-date"></p></div>
+      <div class="t-metrics" id="metrics"></div>
+      <div class="t-grid2">
+        <article class="t-card"><h3>Дәуірлер бойынша меңгеру</h3><p class="t-note">Дәуір сынағының орташа нәтижесі (3 сұрақтан) және сол дәуір бөлімдерін аяқтаған оқушылар үлесі.</p><div id="era-bars"></div></article>
+        <article class="t-card"><h3>Назар аудару керек</h3><div id="insights"></div></article>
+      </div>
+      <article class="t-card">
+        <div class="t-row"><h3>Оқушылар</h3><div class="no-print t-actions"><input type="search" id="filter" placeholder="Оқушыны іздеу" aria-label="Оқушыны іздеу"><button type="button" id="csv" class="t-ghost">CSV жүктеу ↓</button><button type="button" id="print-report" class="t-ghost">Басып шығару</button></div></div>
+        <div class="t-table-wrap"><table id="students"><thead></thead><tbody></tbody></table></div>
+      </article>
+      <article class="t-card">
+        <h3>Бөлімдер картасы</h3>
+        <p class="t-note">Әр бағанда — бір бөлім, әр жолда — бір оқушы. Жасыл ұяшық бөлімнің аяқталғанын көрсетеді.</p>
+        <div class="t-table-wrap"><table id="heatmap" class="t-heat"></table></div>
+      </article>
+      <article class="t-card"><h3>Оқушылардың пікірлері мен қорытындылары</h3><div id="voices"></div></article>
+    </div>
+  </section>
+
+  <section id="tab-sheets" class="t-panel" role="tabpanel" hidden>
+    <div class="t-card no-print">
+      <h2>Жұмыс парағын жасау</h2>
+      <p class="t-note">Дәуірді немесе жеке бөлімдерді таңда. Парақта оқиғаларды ретке келтіру, дерекке сүйеніп жауап беру және өз сөзімен түсіндіру тапсырмалары болады.</p>
+      <div class="t-form">
+        <label>Дәуір<select id="sheet-era"></select></label>
+        <label>Тапсырма саны<select id="sheet-count"><option value="2">2 бөлім</option><option value="3" selected>3 бөлім</option><option value="4">4 бөлім</option><option value="99">Дәуірдің барлық бөлімі</option></select></label>
+        <label class="t-check"><input type="checkbox" id="sheet-key" checked> Жауап кілтін соңғы бетке қосу</label>
+        <label class="t-check"><input type="checkbox" id="sheet-terms" checked> Дәуір сөздігін қосу</label>
+      </div>
+      <div class="t-actions"><button type="button" id="sheet-make" class="t-main">Парақты жасау</button><button type="button" id="sheet-print" class="t-ghost">Басып шығару</button></div>
+    </div>
+    <div id="sheet" class="t-sheet"></div>
+  </section>
+
+  <section id="tab-plans" class="t-panel" role="tabpanel" hidden>
+    <div class="t-card no-print"><h2>Сабақ жоспарлары</h2><p class="t-note">Әр жоспар 45 минутқа арналған. Уақытты сыныптың қарқынына қарай өзгерт.</p><div class="t-actions" id="plan-buttons"></div></div>
+    <div id="plan" class="t-sheet"></div>
+  </section>
+
+  <section id="tab-howto" class="t-panel" role="tabpanel" hidden>
+    <article class="t-card t-prose">
+      <h2>Сайтты сабақта қалай қолдануға болады?</h2>
+      <ol>
+        <li><b>Сабаққа дейін.</b> Сайтты бір рет ашып, «Офлайн жүктеу» батырмасын бас. Сонда интернет әлсіз сыныпта да 3D ойындар ашылады.</li>
+        <li><b>Сабақ басында.</b> Оқушыларға «07 · Нәтиже» бөлімінде аты-жөні мен сыныбын жазуды тапсыр.</li>
+        <li><b>Сабақ барысында.</b> Таңдалған дәуірдің тапсырмаларын, 3D оқиғаны немесе хронология ойынын орындат. Жұмыс парағын қағаз нұсқа ретінде қатар қолдануға болады.</li>
+        <li><b>Сабақ соңында.</b> Оқушылар «Мұғалімге нәтиже файлы (.json)» батырмасын басып, файлды саған жібереді (электрондық пошта, мессенджер немесе флешка).</li>
+        <li><b>Талдау.</b> Файлдарды «Сынып есебі» бетіне жүкте. Кесте мен бөлімдер картасы қай тақырыпты қайталау керегін көрсетеді. Есепті CSV түрінде жүктеп, Excel-де ашуға болады.</li>
+      </ol>
+      <h3>Құпиялылық</h3>
+      <p>Сайт тіркелуді қажет етпейді. Оқушы прогресі мен пікірлері сол оқушының браузерінде сақталады. Мұғалім кабинеті файлдарды тек осы беттің ішінде оқиды, серверге жібермейді.</p>
+      <h3>Тарихи дәлдік туралы</h3>
+      <p>Ойын кейіпкерлері мен диалогтар оқу мақсатында жазылған. Тарихи деректер әр бөлімде бөлек белгіленген және e-history.kz сияқты дереккөздерге сілтеме берілген. Сабақта оқушылардан ойын оқиғасы мен тарихи деректі ажыратуды сұра.</p>
+    </article>
+  </section>
+</main>
+<footer class="t-footer no-print"><div class="t-wrap">Дала мұрасы · Мұғалім кабинеті</div></footer>
+</body>
+</html>

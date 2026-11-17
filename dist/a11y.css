@@ -1,0 +1,23 @@
+/* Қолжетімділік: WCAG AA (4.5:1) талабына сай мәтін контрасты. Бұрынғы стильдердің үстінен жазылады. */
+#home .lead{color:#4e5d72}
+.suggestions>span,#result-count{color:#4f5d70}
+#home .help-button{color:#465a73}
+#home .photo-caption{color:#56657a}
+#games .catalog-head .eyebrow{color:#8a4c37}
+#games .featured-game .entry-tags span,#games .entry-tags span{color:#455c75}
+#games .featured-game p{color:#53647a}
+.story-launchers small{color:#8a4b33}
+#campaign .campaign-status>small,#campaign .campaign-next>small,#campaign .campaign-status>p,#campaign .campaign-next>p{color:#475f7a}
+#games .museum-entry p,#museum-knowledge{color:#435e7a}
+.era-badge small{color:#4b596b}
+.compact-section .fact-card p,.reflection>p,#teachers details>p{color:#4b596b}
+.era-trials header>.eyebrow{color:#8f4229}
+.era-trials header>p{color:#4b596b}
+footer .footer-inner>span{color:#56667a}
+.x-kicker,.x-map-side small{color:#a24b28}
+.x-tag{color:color-mix(in srgb,var(--era) 68%,#000)}
+.x-chrono-card small,.x-person small,.x-tl-role{color:#55616f}
+.ach-grid li.off{opacity:1;background:#f4f6f9}
+.ach-grid li.off strong{color:#3c4c60}
+.ach-grid li.off small{color:#5a6675}
+.ach-grid li.off span{opacity:.55}
