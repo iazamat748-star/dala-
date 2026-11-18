@@ -10,6 +10,7 @@
   const extra = [
     ...(window.DALA_CULTURE || []).map(([id, title, tagline, paras, items]) => ({type: "Мәдениет", title, text: tagline, href: `#culture-${id}`, hay: norm([title, tagline, ...paras, ...items.flat()].join(" "))})),
     ...(window.DALA_EXHIBITS || []).map(([id, title, text]) => ({type: "3D мұражай", title, text, href: `#museum-${id}`, hay: norm(title + " " + text)})),
+    ...[["toguz", "Тоғызқұмалақ", "Компьютерге немесе досыңа қарсы ұлттық ойын"], ["asyk", "Асық ату", "3D алаңда сақамен асық ату"], ["who", "Кім бұл?", "Тарихи тұлғаны кілттер арқылы тап"], ["word", "Сөзжұмбақ", "Тарихи сөзді 6 әрекетте тап"], ["kuy", "Күй жады", "Домбыра әуенін есте сақтап қайтала"], ["pairs", "Жұп тап", "Оқиға мен уақытты жұпта"], ["chrono", "Хронология", "Оқиғаларды уақыт ретімен қой"], ["mapgame", "Картадан тап", "Тарихи орынды картадан тап"], ["ach", "Жетістіктер", "Ойын ұпайлары мен марапаттар"]].map(([id, title, text]) => ({type: "Ойын", title, text, href: `#game-${id}`, hay: norm(`${title} ${text} ойын ойындар`)})),
     ...(window.DALA_CALENDAR || []).map(([m, d, y, title, text, href]) => ({type: "Күнтізбе", title: `${d}.${String(m).padStart(2, "0")}${y ? "." + y : ""} · ${title}`, text, href, hay: norm(`${title} ${text} ${y || ""}`)}))
   ];
   const LABEL = {chapter: "Тарихи оқиға", person: "Тұлға", term: "Сөздік", place: "Тарихи орын"};

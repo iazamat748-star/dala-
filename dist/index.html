@@ -16,9 +16,9 @@
 <link rel="preload" href="fonts/philosopher-cyrillic-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/literata-cyrillic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" as="image" href="assets/hero-shanyrak-800.jpg" imagesrcset="assets/hero-shanyrak-800.jpg 800w, assets/hero-shanyrak.jpg 1600w" imagesizes="100vw" fetchpriority="high">
-<link rel="stylesheet" href="home.css?v=3">
+<link rel="stylesheet" href="home.css?v=7">
 <script src="settings.js?v=3"></script>
-<script defer src="i18n.js?v=1"></script>
+<script defer src="i18n.js?v=2"></script>
 <script type="importmap">{"imports":{"three":"./vendor/three.module.min.js"}}</script>
 </head>
 <body>
@@ -150,17 +150,31 @@
   <section class="band" id="games" aria-labelledby="games-title" style="padding-top:40px">
     <div class="wrap">
       <div class="band-head">
-        <h2 id="games-title" data-i18n="games.title">Тарихи ойындар</h2>
-        <p class="lead" data-i18n="games.lead">Уақытты, жерді және деректерді қаншалықты білесің?</p>
+        <h2 id="games-title" data-i18n="games.title">Ойындар</h2>
+        <p class="lead" data-i18n="games.lead">Ұлттық ойындар мен тарихи сынақтар: тоғызқұмалақ, 3D асық ату, сөзжұмбақ, күй жады және басқалар.</p>
       </div>
-      <div class="subtabs" role="tablist" aria-label="Ойындар" style="margin-top:0">
-        <button type="button" role="tab" aria-selected="true" aria-controls="tab-chrono" id="t-chrono">Хронология</button>
-        <button type="button" role="tab" aria-selected="false" aria-controls="tab-mapgame" id="t-mapgame">Картадан тап</button>
-        <button type="button" role="tab" aria-selected="false" aria-controls="tab-daily" id="t-daily">Күннің сұрағы</button>
+      <div class="subtabs game-picker" role="tablist" aria-label="Ойындар" style="margin-top:0">
+        <button type="button" role="tab" aria-selected="true" aria-controls="tab-chrono" id="t-chrono"><b>Хронология</b><span>Оқиғаларды уақыт ретімен қой</span></button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="tab-toguz" id="t-toguz"><b>Тоғызқұмалақ</b><span>Компьютерге не досыңа қарсы</span><small data-best="toguz" data-unit=""></small></button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="tab-asyk" id="t-asyk"><b>Асық ату</b><span>3D алаңда сақамен ату</span><small data-best="asyk" data-unit=" ұпай"></small></button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="tab-who" id="t-who"><b>Кім бұл?</b><span>Тұлғаны кілттер арқылы тап</span><small data-best="who" data-unit=" ұпай"></small></button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="tab-word" id="t-word"><b>Сөзжұмбақ</b><span>Тарихи сөзді 6 әрекетте тап</span><small data-best="word" data-unit=" ұпай"></small></button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="tab-kuy" id="t-kuy"><b>Күй жады</b><span>Домбыра әуенін қайтала</span><small data-best="kuy" data-unit=" нота"></small></button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="tab-pairs" id="t-pairs"><b>Жұп тап</b><span>Оқиға мен уақытты жұпта</span><small data-best="pairs" data-unit=" жүріс"></small></button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="tab-mapgame" id="t-mapgame"><b>Картадан тап</b><span>Тарихи орынды картадан көрсет</span></button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="tab-daily" id="t-daily"><b>Күннің сұрағы</b><span>Күн сайын бір сұрақ</span></button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="tab-ach" id="t-ach"><b>Жетістіктер</b><span>Ұпайың мен марапаттарың</span></button>
       </div>
       <div id="tab-chrono" role="tabpanel" aria-labelledby="t-chrono"></div>
+      <div id="tab-toguz" role="tabpanel" aria-labelledby="t-toguz" hidden></div>
+      <div id="tab-asyk" role="tabpanel" aria-labelledby="t-asyk" hidden></div>
+      <div id="tab-who" role="tabpanel" aria-labelledby="t-who" hidden></div>
+      <div id="tab-word" role="tabpanel" aria-labelledby="t-word" hidden></div>
+      <div id="tab-kuy" role="tabpanel" aria-labelledby="t-kuy" hidden></div>
+      <div id="tab-pairs" role="tabpanel" aria-labelledby="t-pairs" hidden></div>
       <div id="tab-mapgame" role="tabpanel" aria-labelledby="t-mapgame" hidden></div>
       <div id="tab-daily" role="tabpanel" aria-labelledby="t-daily" hidden></div>
+      <div id="tab-ach" role="tabpanel" aria-labelledby="t-ach" hidden></div>
     </div>
   </section>
 
@@ -203,7 +217,7 @@
 <script>
 // Бөлімдердің скрипттері бет көрсетілгеннен кейін, рет сақталып жүктеледі: алғашқы көрініс тезірек шығады
 (() => {
-  const list = ["history-data.js?v=2", "encyclopedia-data.js?v=2", "culture-data.js?v=2", "map-data.js?v=1", "mapgame.js?v=2", "explore.js?v=6", "portal3.js?v=3", "assistant.js?v=3", "guide.js?v=4", "today.js?v=1", "oyu.js?v=2", "search.js?v=3", "pwa.js?v=1"];
+  const list = ["history-data.js?v=2", "encyclopedia-data.js?v=2", "culture-data.js?v=2", "map-data.js?v=1", "mapgame.js?v=2", "explore.js?v=6", "games2.js?v=4","portal3.js?v=4", "assistant.js?v=3", "guide.js?v=4", "today.js?v=1", "oyu.js?v=2", "search.js?v=4", "pwa.js?v=1"];
   const go = () => {
     list.forEach((src) => { const s = document.createElement("script"); s.src = src; s.async = false; document.body.append(s); });
     const m = document.createElement("script"); m.type = "module"; m.src = "museum3d.js?v=5"; document.body.append(m);

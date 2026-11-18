@@ -619,3 +619,125 @@ html.v3.theme-dark .x-map{background:#16364d}
 .persona-pick label{color:inherit}
 
 .x-tl-card small{color:color-mix(in srgb,var(--era) 55%,var(--ink))!important}
+
+/* ===================== v3.2 · Ойындар ===================== */
+.subtabs.game-picker{display:grid;grid-template-columns:repeat(auto-fill,minmax(172px,1fr));gap:10px;border:0;margin:0 0 26px}
+.subtabs.game-picker button{display:grid;gap:4px;align-content:start;text-align:left;padding:14px 16px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface);margin:0;font:inherit;color:var(--ink);transition:border-color .15s,transform .15s}
+.subtabs.game-picker button:hover{border-color:var(--gold);transform:translateY(-1px)}
+.subtabs.game-picker button b{font:700 17px/1.15 var(--display)}
+.subtabs.game-picker button span{font-size:13px;line-height:1.35;color:var(--muted)}
+.subtabs.game-picker button small{font:700 12px/1.2 var(--display);color:var(--sky);margin-top:2px}
+.subtabs.game-picker button[aria-selected=true]{border:2px solid var(--gold);padding:13px 15px;background:color-mix(in srgb,var(--gold) 12%,var(--surface))}
+.g2-score{margin:14px 0 0;font:700 15px/1.3 var(--display);color:var(--lapis-2)}
+.theme-dark .g2-score{color:var(--gold-soft)}
+.g2{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px;color:var(--ink)}
+.g2-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+.g2-bar select{font:600 15px/1 var(--body);padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--surface);color:var(--ink)}
+.g2-best{font:700 13px/1 var(--display);color:var(--sky);margin-left:auto}
+.g2-status{font:600 16px/1.45 var(--display);margin:4px 0 14px;min-height:1.45em}
+.g2-note{font-size:14px;color:var(--muted);margin:12px 0 0}
+.g2-rules{margin-top:16px}.g2-rules summary{cursor:pointer;font:700 15px/1.4 var(--display)}.g2-rules p{font-size:15px;line-height:1.55;margin:8px 0}
+.g2-confirm{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+.g2-confirm[hidden]{display:none}
+.g2-toasts{position:fixed;left:16px;bottom:16px;z-index:90;display:grid;gap:8px;max-width:min(360px,calc(100vw - 32px));pointer-events:none}
+.g2-toast{background:var(--lapis);color:#fff;border-top:3px solid var(--gold);border-radius:var(--r-md);padding:12px 16px;box-shadow:0 12px 30px rgba(10,25,40,.3);display:grid;gap:3px;animation:g2in .35s ease-out}
+.g2-toast strong{font:700 16px/1.2 var(--display);color:var(--gold-soft)}.g2-toast span{font-size:14px;line-height:1.4}
+.g2-toast.out{opacity:0;transform:translateY(8px);transition:.5s}
+@keyframes g2in{from{opacity:0;transform:translateY(12px)}}
+
+/* Тоғызқұмалақ тақтасы */
+.tg-board{--wood:#7a4b2a;display:grid;gap:10px;padding:16px;border-radius:18px;background:linear-gradient(160deg,#8d5a33,#6a3f22 60%,#5a341c);box-shadow:inset 0 2px 0 rgba(255,255,255,.12),0 10px 26px rgba(40,20,5,.25)}
+.tg-row{display:grid;grid-template-columns:repeat(9,1fr);gap:8px}
+.tg-hole{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;min-height:132px;padding:10px 4px 8px;border:0;border-radius:40px;background:radial-gradient(ellipse at 50% 40%,#3a2213,#4a2c18 70%);box-shadow:inset 0 4px 10px rgba(0,0,0,.55),0 1px 0 rgba(255,255,255,.15);color:#f5e7cf;cursor:pointer;font:inherit}
+.tg-row.opp .tg-hole{justify-content:flex-start;flex-direction:column-reverse}
+.tg-hole:disabled{cursor:default}
+.tg-hole:not(:disabled):hover{box-shadow:inset 0 4px 10px rgba(0,0,0,.55),0 0 0 3px var(--gold)}
+.tg-hole:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.tg-hole.last{box-shadow:inset 0 4px 10px rgba(0,0,0,.55),0 0 0 2px #f1d9a6}
+.tg-hole.hl{background:radial-gradient(ellipse at 50% 40%,#6b4224,#563219 70%)}
+.tg-hole.tuz{background:repeating-linear-gradient(45deg,#4a2c18 0 8px,#5b3720 8px 16px);box-shadow:inset 0 0 0 3px var(--madder)}
+.tg-dots{display:flex;flex-wrap:wrap;justify-content:center;gap:3px;max-width:44px;flex:1;align-content:center}
+.tg-dots i{width:10px;height:10px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff7e6,#d9c39b 55%,#a98c5f)}
+.tg-hole b{font:700 18px/1 var(--display)}
+.tg-hole small{font-size:11px;opacity:.7}
+.tg-kazan{position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 18px;border-radius:30px;background:#3e2414;box-shadow:inset 0 4px 10px rgba(0,0,0,.5);color:#f5e7cf;overflow:hidden}
+.tg-kazan span{font:600 14px/1 var(--display);position:relative;z-index:1}
+.tg-kazan b{font:700 24px/1 var(--display);position:relative;z-index:1}
+.tg-kazan i{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,rgba(217,161,54,.35),rgba(217,161,54,.15));transition:width .3s}
+@media (max-width:640px){.tg-row{gap:4px}.tg-hole{min-height:104px;padding:8px 2px 6px}.tg-dots{max-width:26px;gap:2px}.tg-dots i{width:7px;height:7px}.tg-board{padding:10px}}
+
+/* Асық ату */
+.asyk-stage{position:relative;aspect-ratio:16/9;border-radius:var(--r-lg);overflow:hidden;background:#cdb995;margin-bottom:12px}
+.asyk-stage canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
+.asyk-stage canvas:focus-visible{outline:3px solid var(--gold);outline-offset:-3px}
+.asyk-hud{position:absolute;left:12px;top:12px;background:rgba(20,50,76,.82);color:#fff;font:700 14px/1.2 var(--display);padding:8px 12px;border-radius:20px}
+.asyk-msg{position:absolute;left:50%;top:58px;transform:translateX(-50%);margin:0;background:rgba(20,50,76,.82);color:#fff;font:700 15px/1.3 var(--display);padding:8px 14px;border-radius:20px;text-align:center;max-width:90%}
+.asyk-msg:empty{display:none}
+@media (max-width:640px){.asyk-stage{aspect-ratio:4/5}.asyk-hud{font-size:12px;right:12px}.asyk-msg{top:auto;bottom:12px;font-size:14px}}
+
+/* Кім бұл? */
+.who-card{display:grid;gap:8px;margin-bottom:14px}
+.who-clue{border-left:4px solid var(--gold);background:var(--surface-2);padding:10px 14px;border-radius:0 var(--r-sm) var(--r-sm) 0}
+.who-clue small{font:700 12px/1.2 var(--display);color:var(--muted)}
+.who-clue p{margin:4px 0 0;font-size:16px;line-height:1.5}
+.who-clue.hidden{border-left-color:var(--line);background:transparent;outline:1px dashed var(--line);outline-offset:-1px}
+.who-more{justify-self:start}
+.who-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px}
+.who-after{margin-top:14px}.who-after p{line-height:1.55}
+.who-verdict{font:700 18px/1.4 var(--display)}
+
+/* Сөзжұмбақ */
+.wd-grid{display:grid;gap:6px;justify-content:center;margin:6px 0 16px}
+.wd-line{display:grid;grid-template-columns:repeat(5,56px);gap:6px}
+.wd-line.shake{animation:wdshake .35s}
+@keyframes wdshake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.wd-tile{display:grid;place-items:center;height:56px;border:2px solid var(--line);border-radius:8px;font:700 26px/1 var(--display);text-transform:uppercase;color:var(--ink);background:var(--surface)}
+.wd-tile.filled{border-color:var(--muted)}
+.wd-tile.correct{background:#2f6d58;border-color:#2f6d58;color:#fff}
+.wd-tile.present{background:#d9a136;border-color:#d9a136;color:#1f1606}
+.wd-tile.absent{background:#5f6b75;border-color:#5f6b75;color:#fff}
+.wd-tile.flip{animation:wdflip .5s both}
+@keyframes wdflip{0%{transform:rotateX(0)}50%{transform:rotateX(90deg)}100%{transform:rotateX(0)}}
+.wd-kb{display:grid;gap:6px;max-width:620px;margin:0 auto}
+.wd-row{display:flex;gap:4px;justify-content:center}
+.wd-key{flex:1 1 0;min-width:0;max-width:46px;height:48px;border:0;border-radius:6px;background:var(--surface-2);color:var(--ink);font:700 17px/1 var(--body);cursor:pointer}
+.wd-key.wide{max-width:84px;flex-basis:68px;font:700 13px/1 var(--display)}
+.wd-key.correct{background:#2f6d58;color:#fff}.wd-key.present{background:#d9a136;color:#1f1606}.wd-key.absent{background:#5f6b75;color:#fff}
+.wd-after{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}.wd-after p{flex-basis:100%;margin:0;line-height:1.5}
+@media (max-width:420px){.wd-line{grid-template-columns:repeat(5,48px)}.wd-tile{height:48px}.wd-key{height:42px;font-size:15px}}
+
+/* Күй жады: домбыра мойны */
+.kuy-neck{display:grid;grid-template-columns:repeat(6,1fr);gap:0;padding:26px 18px;border-radius:12px 70px 70px 12px;background:linear-gradient(180deg,#9a6a3e,#7a4d29);box-shadow:inset 0 2px 0 rgba(255,255,255,.18),0 8px 22px rgba(40,20,5,.25);position:relative;margin-bottom:16px}
+.kuy-neck::before,.kuy-neck::after{content:"";position:absolute;left:10px;right:60px;height:2px;background:linear-gradient(90deg,#e8e2d4,#b9b2a4);top:42%;box-shadow:0 1px 1px rgba(0,0,0,.4)}
+.kuy-neck::after{top:58%}
+.kuy-pad{position:relative;z-index:1;display:grid;place-items:center;gap:2px;height:96px;margin:0 3px;border:0;border-left:3px solid #2a1a0e;border-radius:6px;background:rgba(255,255,255,.06);color:#fbf1dd;cursor:pointer;font:inherit;transition:background .12s,transform .12s}
+.kuy-pad b{font:700 18px/1 var(--display)}.kuy-pad small{font-size:12px;opacity:.7}
+.kuy-pad:hover{background:rgba(255,255,255,.14)}
+.kuy-pad.on{background:hsl(calc(30 + var(--i) * 34) 70% 55% / .9);transform:scale(1.05);color:#1b1006}
+.kuy-pad:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+
+/* Жұп тап */
+.pr-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;perspective:900px}
+.pr-card{position:relative;height:118px;border:0;padding:0;background:none;cursor:pointer;font:inherit}
+.pr-inner{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .45s}
+.pr-card.open .pr-inner,.pr-card.done .pr-inner{transform:rotateY(180deg)}
+.pr-back,.pr-face{position:absolute;inset:0;border-radius:var(--r-md);backface-visibility:hidden;display:grid;place-items:center;padding:10px;text-align:center}
+.pr-back{background:var(--lapis) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cpath d='M24 40V22c0-6 5-10 10-8 4 2 4 8 0 9-3 1-5-2-3-4M24 22c0-6-5-10-10-8-4 2-4 8 0 9 3 1 5-2 3-4' fill='none' stroke='%23d9a136' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") center/48px repeat;box-shadow:inset 0 0 0 3px rgba(217,161,54,.5)}
+.pr-face{transform:rotateY(180deg);background:var(--surface-2);border:2px solid var(--line);font:700 15px/1.3 var(--display);color:var(--ink)}
+.pr-face.b{background:color-mix(in srgb,var(--sky) 14%,var(--surface));font-family:var(--body);font-weight:600}
+.pr-card.done .pr-face{border-color:#2f6d58;background:color-mix(in srgb,#2f6d58 18%,var(--surface))}
+.pr-card:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:var(--r-md)}
+@media (max-width:640px){.pr-grid{grid-template-columns:repeat(3,1fr)}.pr-card{height:104px}.pr-face{font-size:13px}}
+html.reduce-motion .pr-inner,html.reduce-motion .wd-tile.flip{transition:none;animation:none}
+@media (prefers-reduced-motion:reduce){.pr-inner{transition:none}.wd-tile.flip{animation:none}}
+
+/* Жетістіктер */
+.ach-stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:20px}
+.ach-stat{display:grid;gap:3px;padding:12px 14px;border-radius:var(--r-md);background:var(--surface-2)}
+.ach-stat strong{font:700 16px/1.2 var(--display)}.ach-stat span{font-size:15px}.ach-stat small{color:var(--muted);font-size:13px}
+.ach-list{list-style:none;padding:0;margin:10px 0 18px;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px}
+.ach-list li{display:grid;grid-template-columns:28px 1fr;column-gap:8px;padding:12px;border:1px dashed var(--line);border-radius:var(--r-md);color:var(--muted)}
+.ach-list li i{grid-row:span 3;font-style:normal;font-size:22px;line-height:1;color:var(--line)}
+.ach-list li strong{font:700 16px/1.2 var(--display);color:var(--ink)}.ach-list li span{font-size:14px;line-height:1.4}.ach-list li small{font-size:12px}
+.ach-list li.got{border:1px solid var(--gold);background:color-mix(in srgb,var(--gold) 10%,var(--surface));color:var(--ink)}
+.ach-list li.got i{color:var(--gold)}

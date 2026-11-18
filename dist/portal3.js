@@ -40,7 +40,9 @@
     const show = (tab) => {
       tabs.forEach((t) => { t.setAttribute("aria-selected", String(t === tab)); $(t.getAttribute("aria-controls")).hidden = t !== tab; });
       const panel = $(tab.getAttribute("aria-controls"));
-      if (!panel.dataset.ready && renderers[panel.id]) { panel.dataset.ready = "1"; renderers[panel.id](panel); }
+      const render = renderers[panel.id] || window.DALA_GAMES?.[panel.id];
+      if (!panel.dataset.ready && render) { panel.dataset.ready = "1"; render(panel); }
+      panel.dispatchEvent(new CustomEvent("g2:show"));
     };
     tabs.forEach((t) => t.addEventListener("click", () => show(t)));
     list.addEventListener("keydown", (e) => {
@@ -206,6 +208,10 @@
     if (id.startsWith("culture-")) {
       const b = [...topics.querySelectorAll("button")][culture.findIndex((c) => c[0] === id.slice(8))];
       if (b) { b.click(); $("culture").scrollIntoView({block: "start"}); }
+    }
+    if (id.startsWith("game-")) {
+      const tab = $("t-" + id.slice(5));
+      if (tab) { tab.click(); $("games").scrollIntoView({block: "start"}); }
     }
     if (id.startsWith("museum-")) { selectExhibit(id.slice(7)); $("museum").scrollIntoView({block: "start"}); }
     if (id.startsWith("place-")) {
