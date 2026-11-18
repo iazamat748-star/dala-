@@ -342,7 +342,7 @@
       make("p", "Сақаны тышқанмен немесе саусақпен артқа тартып жібер — асықтарды шеңберден шығар. Әр деңгейде ату саны шектеулі. Пернетақта: ← → бағыт, ↑ ↓ күш, A/D сақаны жылжыту, бос орын — ату.", "g2-note"));
     panel.append(box);
     msg.textContent = "Алаң жүктеліп жатыр…";
-    import("./asyk3d.js?v=3").then((m) => m.start({canvas, hud, msg, tools, btn, finish, unlock, toast})).catch((e) => {
+    (window.DALA_LOAD3D ? window.DALA_LOAD3D() : Promise.reject(new Error("3d"))).then((m) => m.asyk({canvas, hud, msg, tools, btn, finish, unlock, toast})).catch((e) => {
       msg.textContent = "3D алаң ашылмады: браузер WebGL қолдамайды.";
       console.warn(e);
     });
@@ -776,7 +776,7 @@
       flash(perfect) { bar.classList.remove("ok", "hit"); void bar.offsetWidth; bar.classList.add(perfect ? "ok" : "hit"); tick(perfect ? 1040 : 520, .05, .06); }
     };
     msg.textContent = "Жарыс алаңы жүктеліп жатыр…";
-    import("./bayge3d.js?v=2").then((m) => m.start({canvas, hud, msg, tools, btn, finish, unlock, toast, rhythm})).catch((e) => { msg.textContent = "3D алаң ашылмады: браузер WebGL қолдамайды."; console.warn(e); });
+    (window.DALA_LOAD3D ? window.DALA_LOAD3D() : Promise.reject(new Error("3d"))).then((m) => m.bayge({canvas, hud, msg, tools, btn, finish, unlock, toast, rhythm})).catch((e) => { msg.textContent = "3D алаң ашылмады: браузер WebGL қолдамайды."; console.warn(e); });
   }
 
   /* ================= Киіз үйіңді безендір (мәдениет бөлімінде) ================= */
@@ -786,7 +786,7 @@
       if (!es.some((e) => e.isIntersecting)) return;
       ob.disconnect();
       yurtHost.append(make("h3", "Киіз үйіңді безендір"), make("p", "Киіздің түсін, басқұрдың оюын және есікті таңда. Өзің салған оюды да жапсыра аласың. Киіз үйді тышқанмен не саусақпен айналдыр.", "lead"));
-      import("./yurt3d.js?v=2").then((m) => m.start({host: yurtHost, make, btn})).catch((e) => { yurtHost.append(make("p", "3D көрініс ашылмады: браузер WebGL қолдамайды.")); console.warn(e); });
+      (window.DALA_LOAD3D ? window.DALA_LOAD3D() : Promise.reject(new Error("3d"))).then((m) => m.yurt({host: yurtHost, make, btn})).catch((e) => { yurtHost.append(make("p", "3D көрініс ашылмады: браузер WebGL қолдамайды.")); console.warn(e); });
     }, {rootMargin: "500px"});
     ob.observe(yurtHost);
   }

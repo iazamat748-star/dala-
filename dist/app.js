@@ -1330,9 +1330,25 @@ async function decodeMesh(buffer) {
   }
   return models;
 }
+function meshFromScript() {
+  return new Promise((resolve, reject) => {
+    const s = document.createElement("script");
+    s.src = "dala-mesh.js?v=1";
+    s.onload = () => {
+      const b64 = window.DALA_MESH_B64; delete window.DALA_MESH_B64;
+      if (!b64) return reject(Error("mesh"));
+      const bin = atob(b64), bytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      resolve(new Response(bytes, {headers: {"content-length": String(bytes.length)}}));
+    };
+    s.onerror = () => reject(Error("mesh"));
+    document.head.append(s);
+  });
+}
 async function fetchMesh() {
   if (!("DecompressionStream" in window)) throw Error("old");
-  const response = await fetch("dala-mesh.bin?v=1");
+  // Сайт файлды екі рет басып ашылса (file://), браузер fetch-ке рұқсат бермейді: модельді скрипт арқылы жүктейміз
+  const response = location.protocol === "file:" ? await meshFromScript() : await fetch("dala-mesh.bin?v=1");
   if (!response.ok || !response.body) throw Error("mesh");
   const total = Number(response.headers.get("content-length")) || 0;
   let loaded = 0;
