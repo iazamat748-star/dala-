@@ -9,8 +9,7 @@ episode = sys.argv[sys.argv.index("--")+2] if "--" in sys.argv and len(sys.argv)
 if episode not in {"1465","1643","1723"}:
     raise ValueError("Episode must be 1465, 1643 or 1723")
 slug = {"1465":"qozybasy","1643":"orbulak","1723":"karatau"}[episode]
-if episode != "1465":
-    dist = dist / slug
+dist = dist / slug  # әр 3D саяхаттың өз бумасы: dist/qozybasy, dist/orbulak, dist/karatau
 dist.mkdir(parents=True, exist_ok=True)
 out.mkdir(parents=True, exist_ok=True)
 bpy.ops.wm.read_factory_settings(use_empty=True)

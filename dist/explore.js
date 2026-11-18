@@ -403,6 +403,7 @@
   }
 
   /* ---------- Бөлімдерді орналастыру ---------- */
+  window.DALA_RENDER = {renderTimeline, renderMap, renderPeople, renderGlossary, renderDaily, renderChrono, focusPlace: (id) => mapFocus?.(id), isDone, years};
   const periods = host("periods");
   if (!periods) return;
   const s1 = addSection("timeline-map", "02+ · Уақыт сызығы мен тарихи карта", "Барлық 26 бөлімді уақыт ретімен көр немесе Қазақстан картасынан тарихи орындарды тап.", periods);

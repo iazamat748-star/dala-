@@ -1,7 +1,6 @@
 """Дала мұрасы · құрастыру.
 
-1) Басты беттің CSS файлдарын бір dist/site.css файлына біріктіреді (сұраныс саны азаяды).
-2) dist/sw.js офлайн тізімі мен нұсқасын жаңартады.
+dist/sw.js офлайн тізімі мен нұсқасын жаңартады және офлайн батырмасындағы көлемді жазады.
 
 dist/ ішіндегі кез келген өзгерістен кейін іске қос:
     python tools/build.py
@@ -10,14 +9,18 @@ import hashlib, json, os, re
 from pathlib import Path
 
 DIST = Path(__file__).resolve().parent.parent / "dist"
-CORE_EXT = {".html", ".js", ".css", ".webmanifest", ".svg", ".vtt", ".ico"}
+CORE_EXT = {".html", ".js", ".css", ".webmanifest", ".svg", ".ico", ".woff2"}
 SKIP = {"sw.js"}  # site.css is included below like any other file
 
-# 0) CSS біріктіру: реті маңызды, ол басты беттегі бұрынғы <link> ретімен бірдей
-CSS = ["style.css", "learning-path.css", "journey.css", "camp-upgrade.css", "compact.css", "bookmarks.css",
-       "portal.css", "photo-world.css", "cinematic.css", "explore.css", "classroom.css", "features.css", "a11y.css"]
-bundle = "".join(f"/* ---- {name} ---- */\n" + (DIST / name).read_text(encoding="utf-8").strip() + "\n" for name in CSS)
-(DIST / "site.css").write_text("/* Бұл файлды tools/build.py жасайды. Түзетуді бастапқы CSS файлдарына енгіз. */\n" + bundle, encoding="utf-8")
+# 0) Басты беттің CSS файлдарын бір home.css файлына біріктіру (бетті бөгейтін сұраныстар азаяды)
+HOME_CSS = ["fonts/fonts.css", "explore.css", "features.css", "v3.css"]
+parts = []
+for name in HOME_CSS:
+    text = (DIST / name).read_text(encoding="utf-8")
+    if name.startswith("fonts/"):
+        text = re.sub(r"url\((?!fonts/)", "url(fonts/", text)
+    parts.append(f"/* ---- {name} ---- */\n{text.strip()}\n")
+(DIST / "home.css").write_text("/* tools/build.py жасайды. Өзгерісті бастапқы CSS файлдарына енгіз. */\n" + "".join(parts), encoding="utf-8")
 
 def all_files():
     return [p for p in sorted(DIST.rglob("*")) if p.is_file() and p.name not in SKIP and not p.name.startswith(".")]
@@ -39,8 +42,8 @@ for path in sorted(DIST.rglob("*")):
     files.append(rel)
 
 core = ["./"] + [f for f in files if Path(f).suffix in CORE_EXT]
-core += ["orbulak/", "karatau/"]
-full = ["./", "orbulak/", "karatau/"] + files
+core += ["qozybasy/", "orbulak/", "karatau/"]
+full = ["./", "qozybasy/", "orbulak/", "karatau/"] + files
 version = digest.hexdigest()[:10]
 
 template = (DIST.parent / "tools" / "sw.template.js").read_text(encoding="utf-8")

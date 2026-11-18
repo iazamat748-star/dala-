@@ -33,7 +33,7 @@
       for (const k of keys) {
         if (!k.startsWith("dala-")) continue;
         const c = await caches.open(k);
-        if (await c.match(new URL("dala-mesh.bin", base), {ignoreSearch: true}) && await c.match(new URL("karatau/dala-mesh.bin", base), {ignoreSearch: true}) && await c.match(new URL("orbulak/dala-mesh.bin", base), {ignoreSearch: true})) ready = true;
+        if (await c.match(new URL("qozybasy/dala-mesh.bin", base), {ignoreSearch: true}) && await c.match(new URL("karatau/dala-mesh.bin", base), {ignoreSearch: true}) && await c.match(new URL("orbulak/dala-mesh.bin", base), {ignoreSearch: true})) ready = true;
       }
     } catch {}
     btn.disabled = ready;

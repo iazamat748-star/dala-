@@ -1,0 +1,9 @@
+/* 3D саяхат беттерін жаңа порталдың қаріптері мен түстеріне жақындату (ойын терезесіне тимейді) */
+
+body{font-family:"Literata Variable",Georgia,serif}
+main h1,main h2,main h3,header.top .brand,.eyebrow,.play,.secondary-action,.hero-lesson{font-family:"Philosopher","Trebuchet MS",sans-serif!important}
+header.top{background:#14324c!important;border-bottom:0!important}
+header.top .brand,header.top nav a{color:#f1ece0!important}
+header.top .badge{background:#d9a136!important;color:#1b1407!important;border:0!important}
+main h1{letter-spacing:-.01em}
+main .play{background:#14324c;border-radius:30px}

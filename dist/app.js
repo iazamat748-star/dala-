@@ -1036,7 +1036,7 @@ function createRenderer(vertices, playerVertices, horseVertices, travelerVertice
   let facesReady=0;
   const faceImage=new Image();
   faceImage.onload=()=>{gl.bindTexture(gl.TEXTURE_2D,faceAtlas);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,faceImage);facesReady=1;};
-  faceImage.src=(episode?'../':'')+'assets/cinema/portraits.jpg';
+  faceImage.src=new URL('assets/cinema/portraits.jpg',document.querySelector('script[src*="app.js"]')?.src||location.href).href;
   const faceReadyUniform=gl.getUniformLocation(program,"faceReady");
   const faceAtlasUniform=gl.getUniformLocation(program,"faceAtlas");
   const p = gl.getAttribLocation(program, "p");

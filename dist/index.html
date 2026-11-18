@@ -1,293 +1,211 @@
 <!doctype html>
-<html lang="kk">
+<html lang="kk" class="v3">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#f4f1e8">
-<meta name="description" content="Қазақстан тарихын жеті қадаммен зертте. Тарихи кезеңдер, деректер, 3D саяхат, тапсырмалар және оқу нәтижесі.">
-<title>Дала мұрасы · Қазақстан тарихы</title>
+<meta name="theme-color" content="#0b2033">
+<title>Дала мұрасы · Қазақстан тарихы мен мәдениеті</title>
+<meta name="description" content="Қазақстан тарихы мен мәдениеті: 26 тарихи оқиға, уақыт сызығы мен карта, киіз үй мен домбыраның 3D мұражайы, 3D саяхаттар және көп тілде жауап беретін ЖИ гид.">
+<meta property="og:title" content="Дала мұрасы · Қазақстан тарихы мен мәдениеті">
+<meta property="og:description" content="Тарихты оқы, мұраны 3D-де айналдыр, гидтен кез келген тілде сұра.">
+<meta property="og:image" content="assets/cinema/small/camp.jpg">
 <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon.ico" sizes="48x48">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="preload" as="image" href="assets/steppe-reconstruction-1000.jpg" imagesrcset="assets/steppe-reconstruction-640.jpg 640w, assets/steppe-reconstruction-1000.jpg 1000w, assets/steppe-reconstruction.jpg 1672w" imagesizes="(max-width: 900px) 92vw, 560px" fetchpriority="high">
-<link rel="stylesheet" href="site.css?v=5">
-<script src="settings.js?v=2"></script>
-<script defer src="story.js"></script>
-<script defer src="exploration.js?v=2"></script>
-<script defer src="app.js?v=25"></script>
-<script defer src="museum.js?v=1"></script>
-<script defer src="lesson.js?v=3"></script>
-<script defer src="history-data.js?v=1"></script>
-<script defer src="history.js?v=3"></script>
-<script defer src="learning-path.js?v=5"></script>
-<script defer src="journey.js?v=1"></script>
-<script defer src="compact.js?v=4"></script>
-<script defer src="bookmarks.js?v=1"></script>
-<script defer src="portal.js?v=4"></script>
-<script defer src="photo-world.js?v=3"></script>
-<script defer src="cinematic.js?v=2"></script>
+<link rel="preload" href="fonts/philosopher-cyrillic-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/literata-cyrillic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" as="image" href="assets/hero-shanyrak-800.jpg" imagesrcset="assets/hero-shanyrak-800.jpg 800w, assets/hero-shanyrak.jpg 1600w" imagesizes="100vw" fetchpriority="high">
+<link rel="stylesheet" href="home.css?v=1">
+<script src="settings.js?v=3"></script>
+<script defer src="i18n.js?v=1"></script>
+<script type="importmap">{"imports":{"three":"./vendor/three.module.min.js"}}</script>
 </head>
 <body>
 <a class="skip" href="#main">Негізгі мазмұнға өту</a>
-<header class="top"><div class="wrap top-inner">
-  <a class="brand" href="./"><svg aria-hidden="true" viewBox="0 0 40 40"><rect width="40" height="40" rx="11" fill="#173d33"/><path d="M8 27 20 11l12 16M13 27l7-9 7 9M10 30h20" fill="none" stroke="#e8c789" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Дала мұрасы</a>
-<nav aria-label="Басты мәзір" class="seven-nav"><a href="#home"><span>01</span>Басты бет</a><a href="#periods"><span>02</span>Тарихи кезеңдер</a><a href="#facts"><span>03</span>Тарихи деректер</a><a href="#games"><span>04</span>3D виртуалды саяхат</a><a href="#tasks"><span>05</span>Интерактивті тапсырмалар</a><a href="#assistant"><span>06</span>Жасанды интеллект көмекшісі</a><a href="#results"><span>07</span>Нәтиже және кері байланыс</a></nav>
-  <a class="badge teacher-link" href="teacher.html"><i></i> Мұғалім кабинеті</a><button class="settings-open" id="settings-open" type="button" aria-haspopup="dialog" title="Оқу баптаулары">Аа<span class="sr"> Баптаулар</span></button>
-</div></header>
-<main id="main" class="wrap">
-  <section id="home" class="hero" aria-labelledby="title">
-    <div class="intro">
-      <div class="eyebrow"><span></span> ҚАЗАҚСТАН ТАРИХЫ</div>
-      <h1 id="title">Тарихты<br><em>өзің зертте.</em></h1>
-      <p class="lead">Тарихты көріп, зерттеп, әрекет арқылы үйрен. Жобаның мақсаты — Қазақстан тарихын қазақ тіліндегі деректер, 3D оқиғалар мен тапсырмалар арқылы түсіндіру.</p>
-      <a href="#games" class="portal-start">Ойынды таңда →</a>
-      <form id="search" role="search">
-        <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="10.7" cy="10.7" r="5.7"/><path d="m15 15 4.5 4.5"/></svg>
-        <label class="sr" for="query">Тарихтан іздеу</label>
-        <input id="query" type="search" placeholder="Мысалы, 1465 немесе Керей" autocomplete="off">
-        <button type="submit">Іздеу</button>
-      </form>
-      <div class="suggestions"><span>Жылдам іздеу</span><button type="button" data-query="1465">1465</button><button type="button" data-query="Қазақ хандығы">Қазақ хандығы</button><button type="button" data-query="1643">1643</button><button type="button" data-query="1723">1723</button></div>
-      <a class="hero-lesson" href="#atlas">Тарих картасын ашу <span aria-hidden="true">↓</span></a>
-      <button type="button" class="trial-button help-button" data-help>Сайтты қалай қолданамын?</button>
+<p class="lang-note" id="lang-note" hidden></p>
+<header class="bar">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="Дала мұрасы, басты бет"><svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#14324c"/><circle cx="20" cy="20" r="9" fill="none" stroke="#d9a136" stroke-width="2"/><path d="M20 11v18M11 20h18M13.6 13.6l12.8 12.8M26.4 13.6 13.6 26.4" stroke="#d9a136" stroke-width="1.6"/></svg><span>Дала мұрасы</span></a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav">Мәзір</button>
+    <nav class="nav" id="nav" aria-label="Басты мәзір">
+      <a href="#history" data-i18n="nav.history">Тарих</a>
+      <a href="#culture" data-i18n="nav.culture">Мәдениет</a>
+      <a href="#museum" data-i18n="nav.museum">3D мұражай</a>
+      <a href="#journeys" data-i18n="nav.journeys">3D саяхат</a>
+      <a href="#people" data-i18n="nav.people">Тұлғалар</a>
+      <a href="#games" data-i18n="nav.games">Ойындар</a>
+      <a href="#guide" data-i18n="nav.guide">ЖИ гид</a>
+    </nav>
+    <div class="langs" role="group" aria-label="Тіл / Язык / Language">
+      <button type="button" data-lang="kk" lang="kk">Қаз</button><button type="button" data-lang="ru" lang="ru">Рус</button><button type="button" data-lang="en" lang="en">Eng</button>
     </div>
-    <figure class="feature">
-      <img src="assets/steppe-reconstruction-1000.jpg" srcset="assets/steppe-reconstruction-640.jpg 640w, assets/steppe-reconstruction-1000.jpg 1000w, assets/steppe-reconstruction.jpg 1672w" sizes="(max-width: 900px) 92vw, 560px" width="1672" height="941" fetchpriority="high" decoding="async" alt="Шу аңғарындағы қоныстың жасанды интеллектпен жасалған көркем реконструкциясы">
-      <span class="feature-tag"><span></span> КӨРКЕМ РЕКОНСТРУКЦИЯ</span>
-      <figcaption><div><small>01 / XV ҒАСЫР</small><strong>Қозыбасы қонысы</strong></div><button class="round" type="button" data-play aria-label="Қозыбасы қонысы ойынын ашу">▶</button></figcaption>
-    </figure>
-    <p class="photo-caption">Мұқаба — көркем реконструкция. Ішінде — ойналатын Blender 3D қонысы.</p>
+    <button class="settings-open" id="settings-open" type="button" aria-haspopup="dialog" title="Баптаулар">Аа<span class="sr"> Баптаулар</span></button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <img class="hero-poster" src="assets/hero-shanyrak-800.jpg" srcset="assets/hero-shanyrak-800.jpg 800w, assets/hero-shanyrak.jpg 1600w" sizes="100vw" width="1600" height="828" alt="" fetchpriority="high" decoding="async">
+    <canvas id="hero-canvas" aria-hidden="true"></canvas>
+    <div class="wrap">
+      <h1 id="hero-title" data-i18n="hero.title">Қазақ даласының тарихы мен мәдениеті</h1>
+      <p class="lead" data-i18n="hero.lead">Сақтардан тәуелсіз Қазақстанға дейінгі жол, киіз үйден күйге дейінгі мұра. Оқып, 3D-де айналдырып көр, гидтен кез келген тілде сұра.</p>
+      <div class="hero-actions">
+        <a class="btn btn-gold" href="#history" data-i18n="hero.explore">Тарихты ашу</a>
+        <a class="btn btn-ghost" href="#guide" data-i18n="hero.ask">Гидтен сұрау</a>
+      </div>
+      <p class="hero-hint" data-i18n="hero.hint">Шаңырақ — киіз үйдің төбесі. Сен қазір үйдің ішінен аспанға қарап тұрсың.</p>
+    </div>
   </section>
-<div class="portal-stats"><div><strong>6</strong><span>тарихи дәуір</span></div><div><strong>26</strong><span>оқу тақырыбы</span></div><div><strong>3</strong><span>3D ойын</span></div></div>
-<section id="campaign" class="campaign" aria-label="Зерттеу сапарың"></section>
-<section class="catalog" id="games" aria-labelledby="games-title">
-    <div class="catalog-head"><div><div class="eyebrow"><span></span> 04 · ОРТАНЫ АРАЛА, КЕЙІПКЕРМЕН СӨЙЛЕС</div><h2 id="games-title">3D виртуалды саяхат</h2></div><p id="result-count" aria-live="polite">3 ойын</p></div>
-    <article id="entry" class="entry" data-search-words="қазақстан тарихы 3d 1465 1466 1465-1466 қазақ хандығының құрылуы мемлекет тарихы қозыбасы керей жәнібек есенбұға шу жетісу дулати xv 15 ғасыр">
-      <div class="year game-thumb" style="--cover:url(qozybasy.jpg)"><strong>1465–66</strong><small>ХАНДЫҚ</small></div>
-      <div class="entry-body"><div class="entry-tags"><span>Мемлекет тарихы</span><span>6 тарау · 2 тапсырма</span></div><h3>Қазақ хандығының құрылуы</h3><p>Жас шабарман болып, Керей мен Жәнібекке хабар жеткіз. Өткелді барлап, көшті қонысқа аман бастап кел. Киіз үйге кіріп, тұрмыс бұйымдарын зертте.</p></div>
-      <button class="play" type="button" data-play><span aria-hidden="true">▶</span> Ойынды бастау</button>
-    </article>
-    <article class="entry" data-search-words="қазақстан тарихы 3d 1643 орбұлақ шайқасы жәңгір жалаңтөс баһадүр шатқал қорғаныс xvii 17 ғасыр">
-      <div class="year game-thumb" style="--cover:url(orbulak/orbulak.jpg)"><strong>1643</strong><small>ОРБҰЛАҚ</small></div>
-      <div class="entry-body"><div class="entry-tags"><span>Тарихи шытырман</span><span>Ордағы қорғаныс</span></div><h3>Орбұлақ · Тар шатқалдағы хабар</h3><p>Шатқалды барла. Жәңгір ханға хабар жеткіз де, жақындаған атты жасақты көздеп, үш шепті қорға.</p></div>
-      <a class="play" href="orbulak/?v=3">1643 жылды ашу</a>
-    </article>
-    <article class="entry" data-search-words="қазақстан тарихы 3d 1723 ақтабан шұбырынды алқакөл сұлама қаратау көш сырдария жоңғар xviii 18 ғасыр">
-      <div class="year game-thumb" style="--cover:url(karatau/karatau.jpg)"><strong>1723</strong><small>ҚАРАТАУ</small></div>
-      <div class="entry-body"><div class="entry-tags"><span>Көш хикаясы</span><span>Екі шешім</span></div><h3>Қаратау · Көштің соңғы арбасы</h3><p>Су мен ықтасын ізде. Артта қалғандарға көмектесіп, көшті қауіпсіз аялдамаға баста.</p></div>
-      <a class="play" href="karatau/">1723 жылды ашу</a>
-    </article>
-    <div class="empty" id="empty" hidden><h3>Ойын табылмады</h3><p>«1465», «1643», «1723» немесе тарихи тұлғаның атын деп іздеп көр.</p><button type="button" id="reset">Барлық ойынды көрсету</button></div>
-    <aside class="museum-entry"><div><small>ҚОЗЫБАСЫ · ҚОСЫМША ЗЕРТТЕУ</small><h3>Мұра іздеу</h3><p>Ашық киіз үйді тап. Текемет, сандық пен торсықты зерттеп, далалық дәптеріңді толықтыр. Үш бұйым табылған соң дәптерден Айшаның қорытынды сынағын аш.</p><strong id="museum-progress">Зерттелген бұйымдар · 0 / 3</strong><p id="museum-knowledge">Білім сынағы · әлі өтілмеген</p></div><button class="play" type="button" data-play data-expedition>Мұра іздеуге шығу</button></aside>
+
+  <section class="band" id="history" aria-labelledby="history-title">
+    <div class="wrap">
+      <div class="band-head">
+        <h2 id="history-title" data-i18n="history.title">Тарих</h2>
+        <p class="lead" data-i18n="history.lead">Алты дәуір, 26 оқиға. Дәуірді таңда, уақыт сызығын жылжыт немесе картадан орынды тап.</p>
+      </div>
+      <div class="eras" id="eras" role="group" aria-label="Дәуірлер"></div>
+      <div class="chapters" id="chapters" aria-live="polite"></div>
+      <div class="subtabs" role="tablist" aria-label="Уақыт сызығы мен карта">
+        <button type="button" role="tab" aria-selected="true" aria-controls="tab-timeline" id="t-timeline" data-i18n="history.timeline">Уақыт сызығы</button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="tab-map" id="t-map" data-i18n="history.map">Карта</button>
+      </div>
+      <div id="tab-timeline" role="tabpanel" aria-labelledby="t-timeline"></div>
+      <div id="tab-map" role="tabpanel" aria-labelledby="t-map" hidden></div>
+    </div>
   </section>
-<details class="intro-video"><summary>Қысқаша бейнеролик · 21 секунд</summary>
-<video controls preload="none" poster="qozybasy.jpg" aria-label="Дала мұрасы жобасының таныстырылымы"><source src="intro.mp4" type="video/mp4"><track default kind="captions" srclang="kk" label="Қазақша" src="intro.vtt">Бейнероликті браузерде ойнату қолжетімсіз.</video>
-<p>Дыбыссыз таныстырылым. Қазақша мәтін бейненің ішінде берілген.</p></details>
-<nav class="path-overview" aria-label="Жеті қадамдық оқу жолы"><a href="#home"><b>01</b><span>Басты бет</span><span aria-hidden="true">↗</span></a><a href="#periods"><b>02</b><span>Тарихи кезеңдер</span><span aria-hidden="true">↗</span></a><a href="#facts"><b>03</b><span>Тарихи деректер</span><span aria-hidden="true">↗</span></a><a href="#games"><b>04</b><span>3D виртуалды саяхат</span><span aria-hidden="true">↗</span></a><a href="#tasks"><b>05</b><span>Интерактивті тапсырмалар</span><span aria-hidden="true">↗</span></a><a href="#assistant"><b>06</b><span>Жасанды интеллект көмекшісі</span><span aria-hidden="true">↗</span></a><a href="#results"><b>07</b><span>Нәтиже және кері байланыс</span><span aria-hidden="true">↗</span></a></nav>
 
+  <div class="ornament-rule" aria-hidden="true"></div>
 
-
-
-
-
-
-
-
-
-
-
-<section id="periods" class="path-section" aria-labelledby="periods-title">
-<div class="eyebrow">02 · КЕЗЕҢДІ ТАҢДА</div><h2 id="periods-title">Тарихи кезеңдер</h2>
-<p class="section-lead">Тас дәуірі → Түркі дәуірі → Қазақ хандығы → Тәуелсіздік. Алты дәуір арқылы Қазақстан тарихының негізгі кезеңдерін зертте.</p>
-<div id="period-cards" class="period-grid"></div><a class="section-next" href="#facts">03 · Тарихи деректерге өту ↓</a>
-</section>
-<section id="facts" class="path-section" aria-labelledby="facts-title">
-<div class="eyebrow">03 · ДЕРЕКТІ ЗЕРТТЕ</div><h2 id="facts-title">Тарихи деректер</h2>
-<p class="section-lead">Тақырыпты таңдап, оның тұлғаларын, оқиғаларын, оқу картасын және дереккөздерін қара.</p>
-<label class="field-label" for="fact-topic">Зерттеу тақырыбы</label><select id="fact-topic"></select>
-<div class="fact-tabs" role="tablist" aria-label="Дерек түрі">
-<button id="tab-people" role="tab" aria-selected="true" aria-controls="fact-panel" data-fact="people">Тұлғалар</button>
-<button id="tab-events" role="tab" aria-selected="false" aria-controls="fact-panel" tabindex="-1" data-fact="events">Оқиғалар</button>
-<button id="tab-maps" role="tab" aria-selected="false" aria-controls="fact-panel" tabindex="-1" data-fact="maps">Карталар</button>
-<button id="tab-documents" role="tab" aria-selected="false" aria-controls="fact-panel" tabindex="-1" data-fact="documents">Тарихи құжаттар</button>
-</div><div id="fact-panel" class="fact-panel" role="tabpanel" aria-labelledby="tab-people" tabindex="0"></div>
-<details class="full-lesson"><summary>Толық сабақ · Қазақ хандығының құрылуы</summary><section class="lesson" id="lesson" aria-labelledby="lesson-title">
-  <div class="lesson-header">
-    <div>
-      <div class="eyebrow"><span></span> 01-САБАҚ · XV ҒАСЫР</div>
-      <h2 id="lesson-title">Қазақ хандығы қалай құрылды?</h2>
-      <p>Керей мен Жәнібектің көшуі жаңа мемлекеттің қалыптасуына қалай жол ашқанын зертте.</p>
+  <section class="band" id="culture" aria-labelledby="culture-title">
+    <div class="wrap">
+      <div class="band-head">
+        <h2 id="culture-title" data-i18n="culture.title">Мәдениет</h2>
+        <p class="lead" data-i18n="culture.lead">Киіз үй, домбыра, ою-өрнек, дастарқан, ойын мен жыр — далада ғасырлар бойы қалыптасқан өмір салты.</p>
+      </div>
+      <div class="culture">
+        <div class="topics" id="topics" role="group" aria-label="Мәдениет тақырыптары"></div>
+        <article class="topic" id="topic" aria-live="polite"></article>
+      </div>
     </div>
-    <div class="lesson-progress" aria-label="Оқу барысы">
-      <div><strong>Оқу барысы</strong><span id="lesson-count">0 / 3</span></div>
-      <progress id="lesson-progress" max="3" value="0"></progress>
-      <p id="lesson-status" role="status">Алдымен тарихи деректерді оқы.</p>
+  </section>
+
+  <section class="band band-dark" id="museum" aria-labelledby="museum-title">
+    <div class="wrap">
+      <div class="band-head">
+        <h2 id="museum-title" data-i18n="museum.title">3D мұражай</h2>
+        <p class="lead" data-i18n="museum.lead">Экспонатты таңда, тінтуірмен айналдыр, жақындат. Анимация экспонаттың қалай жасалатынын немесе қолданылатынын көрсетеді.</p>
+      </div>
+      <div class="museum">
+        <div class="stage" id="stage">
+          <canvas id="museum-canvas" aria-label="3D экспонат" role="img"></canvas>
+          <div class="stage-tools">
+            <button type="button" id="museum-play" data-i18n="museum.play">Анимацияны қосу</button>
+            <button type="button" id="museum-reset" data-i18n="museum.reset">Бастапқы көрініс</button>
+          </div>
+          <div class="stage-caption" aria-live="polite"><strong id="exhibit-title">Киіз үй</strong><span id="exhibit-text"></span></div>
+          <div class="stage-fallback" id="stage-fallback" hidden>3D көрініс бұл құрылғыда ашылмады. WebGL қолдайтын браузерді қолданып көр.</div>
+        </div>
+        <div class="exhibits" id="exhibits" role="group" aria-label="Экспонаттар"></div>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <div class="study-path" aria-label="Сабақ кезеңдері">
-    <a href="#timeline"><span data-step-status="read">01</span><strong>Деректі зертте</strong><small>Оқиғалардың байланысын түсін</small></a>
-    <a href="#games"><span data-step-status="game">02</span><strong>Қонысты арала</strong><small>Шабарманның тапсырмаларын орында</small></a>
-    <a href="#challenge"><span data-step-status="quiz">03</span><strong>Біліміңді тексер</strong><small>Жауап беріп, қорытынды жаса</small></a>
-  </div>
-
-  <div class="lesson-content" id="timeline">
-    <div class="timeline">
-      <h3>Оқиғалар реті</h3>
-      <ol>
-        <li><span>XV ғасырдың ортасы</span><div><h4>Әбілқайыр ұлысынан бөліну</h4><p>Керей мен Жәнібек сұлтандар өздеріне ерген жұртпен бірге Шығыс Дешті Қыпшақтан Батыс Жетісуға көшті.</p></div></li>
-        <li><span>Батыс Жетісу</span><div><h4>Жаңа қоныс</h4><p>Моғолстан ханы Есенбұға көшіп келгендерді қабылдап, Шу бойындағы Қозыбасы өңірінен қоныс берді.</p></div></li>
-        <li><span>1465–1466 жылдар</span><div><h4>Хандықтың қалыптасуы</h4><p>Мұхаммед Хайдар Дулати «Тарих-и Рашиди» еңбегінде қазақ сұлтандарының билік жүргізе бастауын хижраның 870 жылына жатқызады. Бұл 1465–1466 жылдарға сәйкес келеді. Хандықтың қалыптасуы бірнеше кезеңнен өтті.</p></div></li>
-      </ol>
-      <p class="lesson-source"><a href="https://e-history.kz/kz/history-of-kazakhstan/show/8625" target="_blank" rel="noopener">Қазақ хандығының құрылуы туралы дерек ↗</a> · <a href="https://e-history.kz/upload/iblock/901/901fbdac3684a23ea77f01af6e34e544.pdf" target="_blank" rel="noopener">Құрылған мерзімі туралы зерттеу ↗</a></p>
-      <button class="secondary-action" type="button" id="mark-read" aria-pressed="false">Деректі оқып шықтым</button>
+  <section class="band" id="journeys" aria-labelledby="journeys-title">
+    <div class="wrap">
+      <div class="band-head">
+        <h2 id="journeys-title" data-i18n="journeys.title">3D саяхат</h2>
+        <p class="lead" data-i18n="journeys.lead">Тарихи оқиғаның ішіне кір: XV ғасырдағы қоныс, 1643 жылғы шатқал, 1723 жылғы көш.</p>
+      </div>
+      <div class="journeys">
+        <a class="journey" href="qozybasy/"><img src="assets/cinema/small/camp.jpg" alt="" loading="lazy" decoding="async"><div><time>1465</time><strong>Қозыбасы қонысы</strong><p>Керей мен Жәнібектің жұрты Шу бойына қоныстанды. Ауылды аралап, тұрғындармен сөйлес, киіз үйдің бұйымдарын зертте.</p><span class="btn btn-gold" data-i18n="journeys.start">Саяхатты бастау</span></div></a>
+        <a class="journey" href="orbulak/"><img src="assets/cinema/small/orbulak.jpg" alt="" loading="lazy" decoding="async"><div><time>1643</time><strong>Орбұлақ шатқалы</strong><p>Жәңгір ханның жасағы тар өткелді қорғады. Шатқалды барла, хабар жеткіз, қорғаныс шебін ұста.</p><span class="btn btn-gold" data-i18n="journeys.start">Саяхатты бастау</span></div></a>
+        <a class="journey" href="karatau/"><img src="assets/cinema/small/karatau.jpg" alt="" loading="lazy" decoding="async"><div><time>1723</time><strong>Қаратаудағы көш</strong><p>Ақтабан шұбырынды жылдары ел көшке шықты. Су мен ықтасын тауып, көшті қауіпсіз аялдамаға баста.</p><span class="btn btn-gold" data-i18n="journeys.start">Саяхатты бастау</span></div></a>
+      </div>
     </div>
-    <aside class="lesson-aside">
-      <h3>Сабақ соңында</h3>
-      <ul>
-        <li>Керей, Жәнібек және Есенбұғаның рөлін түсіндіресің.</li>
-        <li>Көштің бағытын және Қозыбасының орнын сипаттайсың.</li>
-        <li>Тарихи дерек пен ойын оқиғасын ажыратасың.</li>
-      </ul>
-      <h3>Сөздік</h3>
-      <dl>
-        <dt>Хандық</dt><dd>Хан билік жүргізетін мемлекет.</dd>
-        <dt>Моғолстан</dt><dd>Жетісуды да қамтыған ортағасырлық мемлекет.</dd>
-        <dt>Хижра жыл санауы</dt><dd>Дулати оқиға мерзімін көрсетуге қолданған мұсылман күнтізбесі.</dd>
-      </dl>
-    </aside>
-  </div>
-</section></details>
-<a class="section-next" href="#games">04 · 3D саяхатқа өту ↓</a></section>
+  </section>
 
-<section id="tasks" class="path-section" aria-labelledby="tasks-title">
-<div class="eyebrow">05 · БІЛІМІҢДІ БЕКІТ</div><h2 id="tasks-title">Интерактивті тапсырмалар</h2>
-<div id="era-trials" class="era-trials"><header><div class="eyebrow">АЛТЫ ДӘУІР · АЛТЫ СЫНАҚ</div><h3>Дәуір білгірі</h3><p>Әр сынақта үш сұрақ. Бірінші жауабың есептеледі. Түсіндірмені оқып, дерекпен салыстыр. 3/3 нәтижемен дәуір белгісін ал.</p></header><div id="trial-cards" class="trial-cards"></div></div>
-<p class="section-lead">26 бөлімнің 23-інде деректерді ашып, оқиғаларды реттеп, шешім қабылдайсың. Үш бөлімде 3D оқиғаға кіресің. Қосымша бес сұрақтық викторина төменде берілген.</p>
-<section id="atlas" class="history-atlas" aria-labelledby="atlas-title">
-  <header class="atlas-top">
-    <div><p class="atlas-kicker">ТАПСЫРМАЛАР КІТАПХАНАСЫ</p><h2 id="atlas-title">Дәуірлер бойынша тапсырмалар</h2>
-      <p>Тас дәуірінен Тәуелсіз Қазақстанға дейін. Деректерді аш, оқиғаларды ретте және өз шешіміңді дәлелде.</p></div>
-    <div class="atlas-progress"><span>Аяқталған тапсырма</span><strong id="atlas-progress-count">0</strong>
-      <progress id="atlas-progress" value="0" max="1" aria-label="Аяқталған тарих тапсырмалары"></progress></div>
-  </header>
-  <div class="atlas-filters" id="atlas-filters" aria-label="Дәуір сүзгілері"></div>
-  <label class="atlas-search"><span>Бөлімді іздеу</span><input id="atlas-query" type="search" placeholder="Жыл, тұлға немесе тақырып"></label>
-  <p id="atlas-results" aria-live="polite"></p>
-  <div id="atlas-eras"></div>
-  <noscript>Тарих картасының тапсырмаларын ашу үшін браузерде JavaScript қосулы болуы керек.</noscript>
-</section><section class="challenge" id="challenge" aria-labelledby="challenge-title">
-  <div class="challenge-intro">
-    <div class="eyebrow"><span></span> 03 · БЕКІТУ</div>
-    <h2 id="challenge-title">Шабарман сынағы</h2>
-    <p>Бес тапсырма арқылы оқиғалардың ретін, тарихи тұлғаларды және дерек пен ойынның айырмасын тексер.</p>
-    <button class="play" type="button" id="quiz-start">Сынақты бастау</button>
-    <p class="quiz-saved" id="quiz-saved" hidden></p>
-  </div>
-  <div class="quiz-card" id="quiz-card" hidden>
-    <div class="quiz-meta"><span id="quiz-step"></span><span id="quiz-points"></span></div>
-    <h3 id="quiz-question" tabindex="-1"></h3>
-    <p id="quiz-hint"></p>
-    <div id="quiz-options" aria-labelledby="quiz-question"></div>
-    <p id="quiz-feedback" role="status" hidden></p>
-    <div class="quiz-actions"><button type="button" class="secondary-action" id="quiz-undo" hidden>Соңғы таңдауды алып тастау</button><button type="button" class="play" id="quiz-check" hidden>Тексеру</button><button type="button" class="play" id="quiz-next" hidden>Келесі сұрақ</button></div>
-  </div>
-  <details class="reflection">
-    <summary>Өз сөзіңмен түсіндір</summary>
-    <p>Керей мен Жәнібектің Жетісуға көшуі Қазақ хандығының қалыптасуына қалай ықпал етті? Жауабыңа бір дерек қос. Содан кейін ойын үшін жазылған бір көріністі ата.</p>
-    <label for="reflection-note">Қысқа қорытындың</label>
-    <textarea id="reflection-note" rows="4" maxlength="1200" placeholder="Менің ойымша…"></textarea>
-    <small id="reflection-status" role="status">Жазба осы браузерде сақталады.</small>
-  </details>
-</section>
-<a class="section-next" href="#assistant">06 · Көмекшіге сұрақ қою ↓</a></section>
-<section id="assistant" class="path-section assistant-section" aria-labelledby="assistant-title">
-<div class="eyebrow">06 · СҰРА, ТҮСІН, ҚАЙТАЛА</div><h2 id="assistant-title">Жасанды интеллект көмекшісі</h2>
-<p class="mode-badge">Дерекке негізделген көмекші · жергілікті режим</p>
-<p class="section-lead">Бұл нұсқа сұрағыңдағы сөздерге сай сайттағы тарихи деректерді тауып, дереккөздерімен ұсынады. Еркін жауап құратын ЖИ моделі әлі қосылмаған.</p>
-<div class="helper-prompts"><button type="button" data-ask="Керей мен Жәнібек">Керей мен Жәнібек</button><button type="button" data-ask="Түркі қағанаты">Түркі қағанаты</button><button type="button" data-ask="Желтоқсан">Желтоқсан</button><button type="button" data-ask="Тәуелсіздік">Тәуелсіздік</button></div>
-<form id="helper-form"><label class="field-label" for="helper-query">Тарихи сұрағың</label><div class="helper-input"><input id="helper-query" type="text" maxlength="240" required placeholder="Мысалы, Қазақ хандығы қашан құрылды?"><button class="play" type="submit">Жауапты табу</button></div></form>
-<div id="helper-response" role="status" class="helper-response"><p>Сұрағыңды жаз немесе ұсынылған тақырыпты таңда.</p></div>
-<a class="section-next" href="#results">07 · Нәтижені қарау ↓</a></section>
-<section id="results" class="path-section" aria-labelledby="results-title">
-<div class="eyebrow">07 · НӘТИЖЕ ЖӘНЕ КЕРІ БАЙЛАНЫС</div><h2 id="results-title">Зерттеу қорытындың</h2>
-<p class="section-lead">Аяқталған тапсырмалар мен сынақ нәтижелері осы браузердегі оқу барысыңнан жиналады.</p>
-<div id="result-metrics" class="result-metrics" aria-live="polite"></div><div id="learning-recommendation" class="recommendation"></div>
-  <div id="journey-results" class="journey-results" aria-live="polite"></div>
-<details class="completed-list"><summary>Аяқталған бөлімдер</summary><ul id="completed-chapters"></ul></details>
-<button id="download-results" class="secondary-action" type="button">Оқу нәтижесін жүктеу ↓</button>
-<form id="feedback-form" class="feedback-form"><h3>Оқу тәжірибең туралы пікір</h3><label for="feedback-rating">Сабақ қаншалықты түсінікті болды?</label><select id="feedback-rating" required><option value="">Баға таңда</option><option value="5">5 · Өте түсінікті</option><option value="4">4 · Түсінікті</option><option value="3">3 · Қайталау керек</option><option value="2">2 · Қиын болды</option><option value="1">1 · Көмек қажет</option></select><label for="feedback-note">Ұсынысың немесе сұрағың</label><textarea id="feedback-note" rows="3" maxlength="1200" placeholder="Қай тақырыпты тереңірек зерттегің келеді?"></textarea><p>Пікір осы браузерде сақталады. Жоба авторына жіберу үшін жүктелген нәтижені бөлісе аласың.</p><button class="play" type="submit">Пікірді сақтау</button><p id="feedback-status" role="status"></p></form>
-<a class="section-next" href="#periods">Басқа кезеңді зерттеу ↑</a></section>
-<section class="teaching" id="teachers" aria-labelledby="teachers-title">
-  <div class="eyebrow"><span></span> МҰҒАЛІМГЕ</div>
-  <h2 id="teachers-title">Қозыбасы сабағын қалай өткізуге болады?</h2>
-  <p>45 минутқа арналған үлгі. Ойын уақытын сыныптың қарқынына қарай бөл.</p>
-  <ol>
-    <li><b>8 мин</b><span>Кіріспе және уақыт сызығы. Оқушылар көшу бағытын және негізгі тұлғаларды атайды.</span></li>
-    <li><b>22 мин</b><span>Жұппен 3D тапсырма. Бір оқушы шабарманды басқарады, екіншісі деректерді жазып отырады. Орта тұста рөлдерін ауыстырады.</span></li>
-    <li><b>10 мин</b><span>Жеке сынақ. Оқушы оқиғаларды ретке келтіріп, жауаптарының түсіндірмесін оқиды.</span></li>
-    <li><b>5 мин</b><span>Талқылау. Әр жұп ойын оқиғасының бір мысалын және оны толықтыратын бір тарихи деректі атайды.</span></li>
-  </ol>
-  <p><a class="play" href="teacher.html">Мұғалім кабинетін ашу →</a></p>
-  <p>Кабинетте оқушылардың нәтиже файлдарынан сынып есебін құруға, кез келген дәуірге жұмыс парағын басып шығаруға және Орбұлақ пен Қаратауға арналған сабақ жоспарларын алуға болады.</p>
-  <details>
-    <summary>3D көрініс ашылмаса</summary>
-    <p>Уақыт сызығын оқы. Шабарман ретінде Керейге екі сөйлемдік хабар жаз. Бірінші сөйлемде көштің қайдан және қайда бет алғанын айт. Екіншісінде жаңа қоныстың қалыптасудағы рөлін түсіндір. Содан кейін «Шабарман сынағын» орында.</p>
-  </details>
-</section>
+  <div class="ornament-rule" aria-hidden="true"></div>
 
-  <section class="about" id="about"><div><div class="eyebrow"><span></span> ЖОБА ТУРАЛЫ</div><h2>Дерек пен көрініс</h2></div><div><p>Қоныс пен кейіпкерлердің бейнесі XV ғасырдың ортасын елестетуге арналған көркем үлгі. Шабарманның сапары мен диалогтар ойын үшін жазылды. Тарихи мәліметтер ойында бөлек белгіленген.</p><a href="https://e-history.kz/kz/history-of-kazakhstan/show/8625" target="_blank" rel="noopener">Қазақ хандығының құрылуы туралы дерек ↗</a><br><a href="https://e-history.kz/media/scorm/333/400/text/text.htm" target="_blank" rel="noopener">Киіз үй мен тұрмыс бұйымдары туралы дерек ↗</a></div></section>
+  <section class="band" id="people" aria-labelledby="people-title">
+    <div class="wrap">
+      <div class="band-head">
+        <h2 id="people-title" data-i18n="people.title">Тұлғалар мен ұғымдар</h2>
+        <p class="lead" data-i18n="people.lead">Тарихта із қалдырған адамдар және тарихи терминдердің мағынасы.</p>
+      </div>
+      <div class="subtabs" role="tablist" aria-label="Тұлғалар мен сөздік" style="margin-top:0">
+        <button type="button" role="tab" aria-selected="true" aria-controls="tab-persons" id="t-persons" data-i18n="people.people">Тұлғалар</button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="tab-terms" id="t-terms" data-i18n="people.terms">Сөздік</button>
+      </div>
+      <div id="tab-persons" role="tabpanel" aria-labelledby="t-persons"></div>
+      <div id="tab-terms" role="tabpanel" aria-labelledby="t-terms" hidden></div>
+    </div>
+  </section>
+
+  <section class="band" id="games" aria-labelledby="games-title" style="padding-top:40px">
+    <div class="wrap">
+      <div class="band-head">
+        <h2 id="games-title" data-i18n="games.title">Тарихи ойындар</h2>
+        <p class="lead" data-i18n="games.lead">Уақытты, жерді және деректерді қаншалықты білесің?</p>
+      </div>
+      <div class="subtabs" role="tablist" aria-label="Ойындар" style="margin-top:0">
+        <button type="button" role="tab" aria-selected="true" aria-controls="tab-chrono" id="t-chrono">Хронология</button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="tab-mapgame" id="t-mapgame">Картадан тап</button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="tab-daily" id="t-daily">Күннің сұрағы</button>
+      </div>
+      <div id="tab-chrono" role="tabpanel" aria-labelledby="t-chrono"></div>
+      <div id="tab-mapgame" role="tabpanel" aria-labelledby="t-mapgame" hidden></div>
+      <div id="tab-daily" role="tabpanel" aria-labelledby="t-daily" hidden></div>
+    </div>
+  </section>
+
+  <section class="band band-dark" id="guide" aria-labelledby="guide-title">
+    <div class="wrap">
+      <div class="band-head">
+        <h2 id="guide-title" data-i18n="guide.title">ЖИ гид</h2>
+        <p class="lead" data-i18n="guide.lead">Қазақстан тарихы мен мәдениеті туралы кез келген тілде сұра. Гид сайттағы деректерге сүйеніп жауап береді.</p>
+      </div>
+      <div class="guide">
+        <div class="chat">
+          <div class="chat-log" id="chat-log" aria-live="polite" aria-label="Гидпен әңгіме"></div>
+          <form class="chat-form" id="chat-form">
+            <label class="sr" for="chat-input">Сұрағың</label>
+            <textarea id="chat-input" rows="1" data-i18n-placeholder="guide.placeholder" placeholder="Мысалы: Абылай хан кім болған?"></textarea>
+            <button class="btn btn-gold" type="submit" data-i18n="guide.send">Сұрау</button>
+          </form>
+        </div>
+        <aside class="chat-side">
+          <div class="status-pill" id="guide-status"><i></i><span data-i18n="guide.offline">Интернетсіз режим: жауап сайттағы деректерден құрастырылады.</span></div>
+          <div class="suggest" id="suggest"></div>
+          <button class="btn btn-line" type="button" id="guide-settings" data-i18n="guide.settings">Гидті баптау</button>
+          <button class="btn btn-line" type="button" id="guide-clear" data-i18n="guide.clear">Тазалау</button>
+        </aside>
+      </div>
+    </div>
+  </section>
 </main>
-<footer><div class="wrap footer-inner"><span>Дала мұрасы</span><span>Қазақстан тарихына 3D саяхат</span></div></footer>
 
-<dialog id="game" aria-labelledby="game-title">
-  <header class="game-top"><div><small>1465–1466 · 3D САЯХАТ</small><h2 id="game-title">Қозыбасы қонысы</h2></div><div class="game-tools"><button type="button" id="expedition" aria-pressed="false">Мұра іздеу</button><button type="button" id="map-toggle" aria-controls="camp-map" aria-pressed="true">Карта</button><button type="button" id="journal">Дәптер</button><button type="button" id="sound" aria-pressed="false" hidden>Дыбысты қосу</button><button type="button" id="close" aria-label="Ойынды жабу">×</button></div></header>
-  <div class="game-frame">
-    <canvas id="world" aria-label="Қозыбасы қонысының үш өлшемді ойын алаңы"></canvas>
-    <div id="pins"></div>
-    <aside id="camp-map" aria-label="Қоныс картасы">
-      <div><strong>ҚОНЫС КАРТАСЫ</strong><span>↑ С</span></div>
-      <svg id="map-view" viewBox="-21 -20 40 37" role="img" aria-label="Ойыншы, тапсырма және киіз үйдің орналасуы"></svg>
-      <p><span><i></i> Сен</span><span><i></i> Мақсат</span><span><i></i> Киіз үй</span></p>
-    </aside>
-    <div class="look-tools">
-      <button type="button" id="turn-left" aria-label="Көріністі солға бұру">↶</button>
-      <button type="button" id="look-reset" aria-label="Камераны ортаға қайтару">◎</button>
-      <button type="button" id="turn-right" aria-label="Көріністі оңға бұру">↷</button>
-    </div>
-    <div class="hud"><strong id="progress">1 / 6 тарау</strong><span id="objective">Айшаға сәлем бер.</span><span id="direction"></span></div>
-    <div id="expedition-status" class="expedition-status" hidden></div>
-    <div class="travel-hud"><span id="travel-status">Жаяу жүріс · Shift арқылы жүгір</span><label for="energy">Қуат</label><progress id="energy" max="100" value="100"></progress><button id="sprint" type="button" aria-pressed="false">Жүгіру</button></div>
-    <div id="pad" aria-label="Қозғалыс батырмалары"><button data-key="up" aria-label="Алға">▲</button><button data-key="left" aria-label="Солға">◀</button><button data-key="down" aria-label="Артқа">▼</button><button data-key="right" aria-label="Оңға">▶</button></div>
-    <div id="loading" class="overlay"><p id="loading-text" role="status">Қоныс жүктелуде…</p><button type="button" id="retry" hidden>Қайта жүктеу</button></div>
-    <section id="panel" class="overlay" aria-labelledby="panel-title" hidden><div class="story"><div id="panel-label" class="eyebrow"></div><h3 id="panel-title"></h3><p id="panel-text"></p><div id="choices"></div><p id="feedback" role="status"></p><button type="button" id="continue">Жалғастыру</button></div></section>
+<footer class="foot">
+  <div class="wrap">
+    <span data-i18n="footer.text">Дала мұрасы · Қазақстан тарихы мен мәдениеті</span>
+    <span>Деректер: e-history.kz, adilet.zan.kz, gov.kz · Карта: Natural Earth</span>
   </div>
-  <div class="game-bottom"><span class="game-controls-hint"><kbd>W A S D</kbd> немесе <kbd>↑ ← ↓ →</kbd> жүру · <kbd>E</kbd> әрекет · сүйреу арқылы камераны бұру</span><div class="game-actions"><button type="button" id="leave-yurt" hidden>Сыртқа шығу</button><button type="button" id="restart" hidden>Қайта бастау</button><button type="button" id="interact" disabled>Сөйлесу</button></div></div>
-</dialog>
-<dialog id="history-mission" class="history-mission" aria-labelledby="mission-title">
-  <header class="mission-top"><div><div id="mission-date" class="atlas-kicker"></div><strong id="mission-role"></strong></div>
-    <button id="mission-close" type="button" aria-label="Тапсырманы жабу">×</button></header>
-  <div class="mission-body">
-    <h2 id="mission-title" tabindex="-1"></h2>
-    <p id="mission-brief"></p>
-    <div id="mission-stage" class="mission-stage"></div>
-    <div id="mission-work"></div>
-    <p id="mission-feedback" role="status" hidden></p>
-    <div id="mission-actions" class="mission-actions"></div>
-    <details class="mission-sources"><summary>Дереккөздер</summary><ul id="mission-sources"></ul></details>
-  </div>
-</dialog>
-<dialog id="era-trial" aria-labelledby="trial-title">
-<header class="trial-top"><div><small id="trial-era-label"></small><h2 id="trial-title" tabindex="-1">Дәуір сынағы</h2></div><button id="trial-close" type="button" aria-label="Дәуір сынағын жабу">×</button></header>
-<div class="trial-body"><p id="trial-step"></p><h3 id="trial-question" tabindex="-1"></h3><div id="trial-options"></div><p id="trial-feedback" role="status"></p><div id="trial-sources"></div><div id="trial-actions"></div><p id="trial-storage" role="status"></p></div>
-</dialog>
+</footer>
+
+<dialog class="reader" id="reader" aria-labelledby="reader-title"></dialog>
+<dialog class="guide-dialog" id="guide-dialog" aria-labelledby="guide-dialog-title"></dialog>
 <script>
-// Қосымша модульдер бет көрсетілгеннен кейін, рет сақталып жүктеледі: алғашқы көрініс тезірек шығады
-addEventListener("load", () => {
-  const go = () => ["map-data.js?v=1", "encyclopedia-data.js?v=1", "flashcards.js?v=1", "mapgame.js?v=1", "explore.js?v=5", "assistant.js?v=2", "achievements.js?v=2", "classroom.js?v=2", "game-extras.js?v=3", "pwa.js?v=1"].forEach((src) => { const s = document.createElement("script"); s.src = src; s.async = false; document.body.append(s); });
-  "requestIdleCallback" in window ? requestIdleCallback(go, {timeout: 1200}) : setTimeout(go, 150);
-});
+// Бөлімдердің скрипттері бет көрсетілгеннен кейін, рет сақталып жүктеледі: алғашқы көрініс тезірек шығады
+(() => {
+  const list = ["history-data.js?v=2", "encyclopedia-data.js?v=2", "culture-data.js?v=1", "map-data.js?v=1", "mapgame.js?v=2", "explore.js?v=6", "portal3.js?v=1", "assistant.js?v=3", "guide.js?v=1", "pwa.js?v=1"];
+  const go = () => {
+    list.forEach((src) => { const s = document.createElement("script"); s.src = src; s.async = false; document.body.append(s); });
+    const m = document.createElement("script"); m.type = "module"; m.src = "museum3d.js?v=3"; document.body.append(m);
+  };
+  const later = () => ("requestIdleCallback" in window ? requestIdleCallback(go, {timeout: 600}) : setTimeout(go, 50));
+  document.readyState === "complete" ? later() : addEventListener("load", later);
+})();
 </script>
 </body>
 </html>
