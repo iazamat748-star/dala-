@@ -211,7 +211,7 @@
     }
     if (id.startsWith("game-")) {
       const tab = $("t-" + id.slice(5));
-      if (tab) { tab.click(); $("games").scrollIntoView({block: "start"}); }
+      if (tab) { tab.click(); $("games").scrollIntoView({block: "start"}); const pk = tab.parentElement; pk.scrollLeft = tab.offsetLeft - pk.offsetLeft - 8; }
     }
     if (id.startsWith("museum-")) { selectExhibit(id.slice(7)); $("museum").scrollIntoView({block: "start"}); }
     if (id.startsWith("place-")) {

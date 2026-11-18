@@ -12,7 +12,7 @@
   /* ================= Ұпай мен жетістіктер ================= */
   const SKEY = "dala-murasy-games-v1";
   const GAMES = {
-    toguz: "Тоғызқұмалақ", asyk: "Асық ату", who: "Кім бұл?", word: "Сөзжұмбақ", kuy: "Күй жады", pairs: "Жұп тап"
+    toguz: "Тоғызқұмалақ", asyk: "Асық ату", bayge: "Бәйге", who: "Кім бұл?", word: "Сөзжұмбақ", kuy: "Күй жады", pairs: "Жұп тап"
   };
   const ACH = [
     ["toguz-win", "Қазан иесі", "Тоғызқұмалақта компьютерді жең."],
@@ -26,7 +26,9 @@
     ["kuy-8", "Күйші", "Күй жадында 8 нотаны жаңылмай қайтала."],
     ["kuy-15", "Құрманғазы ізімен", "Күй жадында 15 нотаға жет."],
     ["pairs-12", "Зерде", "Жұп тап ойынын 12 жүрістен аз аяқта."],
-    ["all-games", "Дала жиһангезі", "Алты ойынның бәрін кемі бір рет ойна."]
+    ["bayge-win", "Бәйге жүйрігі", "Бәйгеде бірінші келіп, бас жүлдені ал."],
+    ["daily-3", "Тұрақты ойыншы", "Күнделікті тапсырмаларды 3 күн қатарынан орында."],
+    ["all-games", "Дала жиһангезі", "Жеті ойынның бәрін кемі бір рет ойна."]
   ];
   const load = () => { try { return {best: {}, plays: {}, ach: {}, points: 0, ...JSON.parse(localStorage.getItem(SKEY) || "{}")}; } catch { return {best: {}, plays: {}, ach: {}, points: 0}; } };
   let S = load();
@@ -47,24 +49,76 @@
     toast(`Жаңа жетістік: ${a[1]}`, a[2] + " +25 ұпай");
   }
   // Ойын аяқталғанда шақырылады: ұпай қосылады, рекорд жаңарады
-  function finish(game, score, higherIsBetter = true) {
+  function finish(game, score, higherIsBetter = true, meta = {}) {
     S.plays[game] = (S.plays[game] || 0) + 1;
-    S.points += Math.max(0, Math.round(higherIsBetter ? score : 0));
+    S.points += Math.max(0, Math.round(meta.points ?? (higherIsBetter ? score : 0)));
     const old = S.best[game];
     const record = old == null || (higherIsBetter ? score > old : score < old);
     if (record) S.best[game] = score;
     save();
     if (Object.keys(GAMES).every((g) => S.plays[g])) unlock("all-games");
+    checkDaily(game, score, meta);
     return record;
+  }
+  /* ---------- Күнделікті тапсырмалар ---------- */
+  const TASKS = [
+    ["toguz-win", "Тоғызқұмалақта компьютерді жең", "toguz", (g, s, m) => g === "toguz" && m.win],
+    ["toguz-play", "Тоғызқұмалақты соңына дейін ойна", "toguz", (g) => g === "toguz"],
+    ["asyk-60", "Асық атуда 60 ұпай жина", "asyk", (g, s) => g === "asyk" && s >= 60],
+    ["who-20", "«Кім бұл?» ойынында 20 ұпайдан асыр", "who", (g, s) => g === "who" && s >= 20],
+    ["word", "Сөзжұмбақты шеш", "word", (g, s) => g === "word" && s > 0],
+    ["kuy-6", "Күй жадында 6 нотаға жет", "kuy", (g, s) => g === "kuy" && s >= 6],
+    ["pairs-16", "Жұп тапты 16 жүрістен аз аяқта", "pairs", (g, s) => g === "pairs" && s < 16],
+    ["bayge-3", "Бәйгеде алғашқы үштікке кір", "bayge", (g, s, m) => g === "bayge" && m.place <= 3]
+  ];
+  function todayTasks() {
+    // Күн нөміріне байланған тұрақты кездейсоқ таңдау: бүгін бәріне бірдей үш тапсырма
+    let seed = dayIndex() * 9301 + 49297;
+    const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+    const pool = TASKS.slice(), out = [];
+    while (out.length < 3) { const t = pool.splice(Math.floor(rnd() * pool.length), 1)[0]; if (!out.some((x) => x[2] === t[2])) out.push(t); }
+    return out;
+  }
+  function dailyState() { if (!S.daily || S.daily.date !== today()) S.daily = {date: today(), done: []}; return S.daily; }
+  function checkDaily(game, score, meta) {
+    const d = dailyState(); let changed = false;
+    for (const [id, text, , test] of todayTasks()) {
+      if (d.done.includes(id) || !test(game, score, meta)) continue;
+      d.done.push(id); changed = true; S.points += 20;
+      toast("Күнделікті тапсырма орындалды", `${text}. +20 ұпай`);
+    }
+    if (changed && d.done.length === 3) {
+      const y = new Date(Date.parse(today() + "T00:00:00Z") - 864e5).toISOString().slice(0, 10);
+      S.streak = {last: today(), n: S.streak?.last === y ? (S.streak.n || 0) + 1 : 1};
+      S.points += 50;
+      toast("Бүгінгі үш тапсырма да орындалды!", `+50 ұпай. Қатарынан ${S.streak.n} күн.`);
+      if (S.streak.n >= 3) setTimeout(() => unlock("daily-3"), 50);
+    }
+    if (changed) save();
+  }
+  const dailyBox = make("div", null, "g2-daily");
+  function drawDaily() {
+    const d = dailyState();
+    const streak = S.streak && (S.streak.last === today() || S.streak.last === new Date(Date.parse(today() + "T00:00:00Z") - 864e5).toISOString().slice(0, 10)) ? S.streak.n : 0;
+    dailyBox.replaceChildren(make("strong", `Бүгінгі тапсырмалар${streak ? ` · қатарынан ${streak} күн` : ""}`));
+    const ul = make("ul");
+    todayTasks().forEach(([id, text, game]) => {
+      const li = make("li", null, d.done.includes(id) ? "done" : "");
+      const a = make("a", text, null, {href: `#game-${game}`});
+      li.append(make("i", d.done.includes(id) ? "✓" : "", null, {"aria-hidden": "true"}), a, make("span", d.done.includes(id) ? " (орындалды)" : "", "sr"));
+      ul.append(li);
+    });
+    dailyBox.append(ul);
   }
   const scorePill = make("p", null, "g2-score", {"aria-live": "polite"});
   function refreshScore() {
     const got = Object.keys(S.ach).length;
-    scorePill.textContent = `Жалпы ұпай: ${S.points} · Жетістік: ${got}/${ACH.length}`;
+    scorePill.textContent = `Жалпы ұпай: ${S.points} · Жетістік: ${got}/${ACH.length} · Бүгінгі тапсырма: ${dailyState().done.length}/3`;
+    drawDaily();
     document.querySelectorAll("[data-best]").forEach((n) => { const v = S.best[n.dataset.best]; n.textContent = v == null ? "Әлі ойналмады" : `Рекорд: ${v}${n.dataset.unit || ""}`; });
   }
   const head = document.querySelector("#games .band-head");
-  if (head) head.append(scorePill);
+  if (head) head.append(scorePill, dailyBox);
   refreshScore();
 
   /* ================= Дыбыс ================= */
@@ -269,7 +323,7 @@
       draw();
       if (mode !== "ai") return;
       if (s.winner === 0) { unlock("toguz-win"); if (level === 2) unlock("toguz-hard"); toast("Жеңіс!", `Тоғызқұмалақ: ${s.k[0]}:${s.k[1]}`); }
-      finish("toguz", s.k[0]);
+      finish("toguz", s.k[0], true, {win: s.winner === 0});
     }
     function newGame() { s = T.init(); history = []; last = -1; busy = false; draw(); }
     draw();
@@ -627,8 +681,7 @@
         pluck(330 + found * 30, .3);
         if (found === cards.length / 2) {
           clearInterval(timer);
-          const record = finish("pairs", moves, false);
-          S.points += Math.max(10, 100 - (moves - 8) * 5); save();
+          const record = finish("pairs", moves, false, {points: Math.max(10, 100 - (moves - 8) * 5)});
           if (moves < 12) unlock("pairs-12");
           info.textContent = `Бәрі табылды! ${moves} жүріс, ${secs()} секунд.${record ? " Жаңа рекорд!" : ""}`;
           return;
@@ -655,7 +708,7 @@
       Object.entries(GAMES).forEach(([id, nm]) => {
         const c = make("div", null, "ach-stat");
         const b = S.best[id];
-        c.append(make("strong", nm), make("span", b == null ? "Әлі ойналмады" : `Рекорд: ${b}${id === "pairs" ? " жүріс" : id === "kuy" ? " нота" : ""}`), make("small", `Ойналды: ${S.plays[id] || 0} рет`));
+        c.append(make("strong", nm), make("span", b == null ? "Әлі ойналмады" : `Рекорд: ${b}${id === "pairs" ? " жүріс" : id === "kuy" ? " нота" : id === "bayge" ? " с" : ""}`), make("small", `Ойналды: ${S.plays[id] || 0} рет`));
         stats.append(c);
       });
       const list = make("ul", null, "ach-list");
@@ -664,20 +717,84 @@
         li.append(make("i", S.ach[id] ? "✦" : "◇", null, {"aria-hidden": "true"}), make("strong", title), make("span", text), make("small", S.ach[id] ? `Алынды: ${S.ach[id]}` : "Әлі алынбады"));
         list.append(li);
       });
-      box.append(make("p", `Жалпы ұпай: ${S.points}. Жетістік: ${Object.keys(S.ach).length}/${ACH.length}.`, "g2-status"), stats, make("h3", "Жетістіктер"), list,
-        btn("Нәтижелерді тазалау", () => { if (confirmReset.hidden) { confirmReset.hidden = false; return; } }, "btn btn-line"), confirmReset);
+      const dclone = dailyBox.cloneNode(true); dclone.classList.add("in-ach");
+      box.append(make("p", `Жалпы ұпай: ${S.points}. Жетістік: ${Object.keys(S.ach).length}/${ACH.length}.`, "g2-status"), dclone, stats, make("h3", "Жетістіктер"), list,
+        make("h3", "Прогресті сақтау"),
+        make("p", "Ұпайларың мен жетістіктерің тек осы браузерде сақталады. Басқа құрылғыға көшіру үшін файлға сақтап, сол жақта қайта жүкте. ЖИ гидтің кілттері файлға кірмейді.", "g2-note"),
+        backupBar, confirmReset);
     };
     const confirmReset = make("p", null, "g2-confirm"); confirmReset.hidden = true;
+    const fileIn = make("input", null, "sr", {type: "file", accept: ".json,application/json", "aria-label": "Прогресс файлын таңдау"});
+    const backupBar = make("div", null, "g2-bar");
+    const backupMsg = make("span", "", "g2-note", {"aria-live": "polite"});
+    backupBar.append(
+      btn("Файлға сақтау", () => {
+        const data = {app: "dala-murasy", version: 1, saved: new Date().toISOString(), keys: {}};
+        for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k.startsWith("dala-murasy") && !k.includes("guide")) data.keys[k] = localStorage.getItem(k); }
+        const a = make("a", null, null, {href: URL.createObjectURL(new Blob([JSON.stringify(data, null, 1)], {type: "application/json"})), download: `Dala-murasy-progress-${today()}.json`});
+        document.body.append(a); a.click(); a.remove(); backupMsg.textContent = "Файл сақталды.";
+      }, "btn btn-gold"),
+      btn("Файлдан қалпына келтіру", () => fileIn.click()),
+      btn("Нәтижелерді тазалау", () => { confirmReset.hidden = false; }),
+      fileIn, backupMsg);
+    fileIn.addEventListener("change", async () => {
+      const f = fileIn.files[0]; if (!f) return;
+      try {
+        const data = JSON.parse(await f.text());
+        if (data.app !== "dala-murasy" || typeof data.keys !== "object") throw new Error("format");
+        let n = 0;
+        for (const [k, v] of Object.entries(data.keys)) if (k.startsWith("dala-murasy") && !k.includes("guide") && typeof v === "string") { localStorage.setItem(k, v); n++; }
+        S = load(); refreshScore(); draw(); backupMsg.textContent = `Қалпына келтірілді: ${n} жазба.`;
+      } catch { backupMsg.textContent = "Бұл файл «Дала мұрасының» прогресс файлы емес."; }
+      fileIn.value = "";
+    });
     confirmReset.append(make("span", "Барлық ұпай мен жетістік өшеді. "), btn("Иә, тазалау", () => { localStorage.removeItem(SKEY); S = load(); refreshScore(); confirmReset.hidden = true; draw(); }, "btn btn-gold"), btn("Жоқ", () => { confirmReset.hidden = true; }));
     panel.append(box);
     draw();
     panel.addEventListener("g2:show", draw);
   }
 
+  /* ================= 7. Бәйге (3D) ================= */
+  function renderBayge(panel) {
+    const box = make("div", null, "g2 g2-bayge");
+    const stage = make("div", null, "asyk-stage bayge-stage");
+    const canvas = make("canvas", null, null, {tabindex: "0", "aria-label": "Бәйге: 3D ат жарысы. Бос орын не жоғары бағыттауыш — қамшы."});
+    const hud = make("div", null, "asyk-hud", {"aria-live": "off"});
+    const msg = make("p", null, "asyk-msg", {"aria-live": "polite"});
+    const rh = make("div", null, "bayge-rhythm", {"aria-hidden": "true"});
+    const bar = make("div", null, "rh-bar"), zone = make("i", null, "rh-zone"), mark = make("b", null, "rh-mark");
+    bar.append(zone, mark);
+    const stam = make("div", null, "rh-stamina"), stamFill = make("i"); stam.append(stamFill);
+    rh.append(make("small", "Ырғақ"), bar, make("small", "Тыныс"), stam);
+    stage.append(canvas, hud, msg, rh);
+    const tools = make("div", null, "g2-bar");
+    tools.append(make("span", "", "g2-best", {"data-best": "bayge", "data-unit": " с"}));
+    box.append(stage, tools, make("p", "Сенің атың — Тайбурыл. Сары белгі жасыл аймаққа жеткенде бассаң, ат қатты екпін алады. Тым жиі басқанда ат шаршайды — «Тыныс» жолағына қара. Қашықтық 320 метр, бес жүйрікпен жарысасың.", "g2-note"));
+    panel.append(box);
+    const rhythm = {
+      set(phase, stamina) { mark.style.left = `${phase * 100}%`; stamFill.style.width = `${stamina * 100}%`; stam.classList.toggle("low", stamina < .15); },
+      flash(perfect) { bar.classList.remove("ok", "hit"); void bar.offsetWidth; bar.classList.add(perfect ? "ok" : "hit"); tick(perfect ? 1040 : 520, .05, .06); }
+    };
+    msg.textContent = "Жарыс алаңы жүктеліп жатыр…";
+    import("./bayge3d.js?v=2").then((m) => m.start({canvas, hud, msg, tools, btn, finish, unlock, toast, rhythm})).catch((e) => { msg.textContent = "3D алаң ашылмады: браузер WebGL қолдамайды."; console.warn(e); });
+  }
+
+  /* ================= Киіз үйіңді безендір (мәдениет бөлімінде) ================= */
+  const yurtHost = document.getElementById("yurt-design");
+  if (yurtHost) {
+    const ob = new IntersectionObserver((es) => {
+      if (!es.some((e) => e.isIntersecting)) return;
+      ob.disconnect();
+      yurtHost.append(make("h3", "Киіз үйіңді безендір"), make("p", "Киіздің түсін, басқұрдың оюын және есікті таңда. Өзің салған оюды да жапсыра аласың. Киіз үйді тышқанмен не саусақпен айналдыр.", "lead"));
+      import("./yurt3d.js?v=2").then((m) => m.start({host: yurtHost, make, btn})).catch((e) => { yurtHost.append(make("p", "3D көрініс ашылмады: браузер WebGL қолдамайды.")); console.warn(e); });
+    }, {rootMargin: "500px"});
+    ob.observe(yurtHost);
+  }
+
   // Ойын панелі ашылған сайын рекордтар жаңарады
   document.addEventListener("g2:show", refreshScore, true);
   window.DALA_GAMES = {
-    "tab-toguz": renderToguz, "tab-asyk": renderAsyk, "tab-who": renderWho, "tab-word": renderWord,
+    "tab-toguz": renderToguz, "tab-asyk": renderAsyk, "tab-bayge": renderBayge, "tab-who": renderWho, "tab-word": renderWord,
     "tab-kuy": renderKuy, "tab-pairs": renderPairs, "tab-ach": renderAch
   };
   window.DALA_SCORE = {finish, unlock, toast, state: () => load(), ACH, GAMES};

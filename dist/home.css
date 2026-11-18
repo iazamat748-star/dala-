@@ -741,3 +741,49 @@ html.reduce-motion .pr-inner,html.reduce-motion .wd-tile.flip{transition:none;an
 .ach-list li strong{font:700 16px/1.2 var(--display);color:var(--ink)}.ach-list li span{font-size:14px;line-height:1.4}.ach-list li small{font-size:12px}
 .ach-list li.got{border:1px solid var(--gold);background:color-mix(in srgb,var(--gold) 10%,var(--surface));color:var(--ink)}
 .ach-list li.got i{color:var(--gold)}
+
+/* ===================== v3.3 · Бәйге, күнделікті тапсырмалар, киіз үй ===================== */
+.g2-daily{margin-top:12px;padding:12px 16px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface);max-width:760px}
+.g2-daily strong{font:700 15px/1.3 var(--display)}
+.g2-daily ul{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px 18px}
+.g2-daily li{display:flex;align-items:center;gap:7px;font-size:15px}
+.g2-daily li i{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;border:2px solid var(--line);font-style:normal;font-size:12px;font-weight:800;color:#fff}
+.g2-daily li.done i{background:#2f6d58;border-color:#2f6d58}
+.g2-daily li.done a{color:var(--muted);text-decoration:line-through}
+.g2-daily a{color:var(--ink)}
+.g2-daily.in-ach{margin:0 0 18px;background:var(--surface-2);border:0;max-width:none}
+.bayge-stage{aspect-ratio:16/8}
+.bayge-rhythm{position:absolute;right:12px;top:12px;display:grid;grid-template-columns:auto 170px;gap:6px 8px;align-items:center;background:rgba(20,50,76,.82);color:#fff;padding:10px 12px;border-radius:14px;font:700 12px/1 var(--display)}
+.rh-bar,.rh-stamina{position:relative;height:12px;border-radius:6px;background:rgba(255,255,255,.18);overflow:hidden}
+.rh-zone{position:absolute;left:72%;right:0;top:0;bottom:0;background:#3f9a6f}
+.rh-mark{position:absolute;top:-2px;bottom:-2px;width:4px;margin-left:-2px;background:#f1d9a6;border-radius:2px}
+.rh-bar.ok{animation:rhok .3s}.rh-bar.hit{animation:rhhit .3s}
+@keyframes rhok{from{box-shadow:0 0 0 3px #3f9a6f}}@keyframes rhhit{from{box-shadow:0 0 0 3px #d9a136}}
+.rh-stamina i{position:absolute;inset:0 auto 0 0;background:#d9a136}
+.rh-stamina.low i{background:#c0453b}
+.bayge-whip{min-width:140px}
+@media (max-width:640px){.bayge-stage{aspect-ratio:4/5}.bayge-rhythm{top:auto;bottom:12px;right:12px;left:12px;grid-template-columns:auto 1fr}.g2-bayge .asyk-msg{bottom:96px}}
+.yurt-design{margin-top:56px}
+.yurt-design h3{font-size:clamp(24px,3vw,32px)}
+.yurt-design .lead{margin:8px 0 18px;max-width:68ch}
+.yd{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;align-items:start}
+.yd-stage{aspect-ratio:4/3;border-radius:var(--r-lg);overflow:hidden;background:#c9dbe3}
+.yd-stage canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
+.yd-panel{display:grid;gap:12px}
+.yd-group{border:0;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:6px}
+.yd-group legend{font:700 15px/1.3 var(--display);margin-bottom:6px;padding:0}
+.yd-opt{display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:1px solid var(--line);border-radius:20px;background:var(--surface);color:var(--ink);font:600 14px/1 var(--body);cursor:pointer}
+.yd-opt i{width:16px;height:16px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.2)}
+.yd-opt[aria-pressed=true]{border:2px solid var(--gold);padding:7px 10px;background:color-mix(in srgb,var(--gold) 12%,var(--surface))}
+.yd-note{font-size:14px;color:var(--muted);margin:0}
+.yd-note[hidden]{display:none}
+@media (max-width:860px){.yd{grid-template-columns:1fr}}
+.yd-panel .btn{justify-self:start}
+@media (max-width:640px){
+  .subtabs.game-picker{display:flex;overflow-x:auto;scroll-snap-type:x proximity;gap:8px;padding:2px 2px 8px;margin-bottom:16px}
+  .subtabs.game-picker button{flex:0 0 138px;scroll-snap-align:start;padding:11px 12px}
+  .subtabs.game-picker button[aria-selected=true]{padding:10px 11px}
+  .subtabs.game-picker button span{display:none}
+  .g2{padding:14px}
+  .asyk-msg{font-size:13px;max-width:80%}
+}
