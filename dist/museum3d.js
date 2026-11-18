@@ -243,7 +243,7 @@ function museum(canvas) {
   rug.rotation.x = -Math.PI / 2; rug.position.y = .002; rug.receiveShadow = true; scene.add(rug);
 
   let current = null, anim = null, playing = false, clock = new THREE.Clock(), running = false, built = {};
-  const views = {yurt: [5.2, 3.1, 5.8, 1.1], shanyrak: [2.2, 2.4, 2.4, .9], dombyra: [1.5, 1.2, 2.05, .85], toguz: [2.6, 2.6, 2.8, .2], ornament: [0, 1.5, 5, 1.45]};
+  const views = {yurt: [5.2, 3.1, 5.8, 1.1], shanyrak: [2.2, 2.4, 2.4, .9], dombyra: [1.5, 1.2, 2.05, .85], toguz: [2.6, 2.6, 2.8, .2], ornament: [0, 1.5, 5, 1.45], balbal: [2.2, 1.6, 3.2, 1.0], tamgaly: [0.6, 1.5, 6.2, 1.2], kobyz: [1.3, 1.15, 2.5, .8]};
   function setView(id) {
     const [x, y, z, ty] = views[id] || [4, 3, 5, 1];
     camera.position.set(x, y, z); controls.target.set(0, ty, 0); controls.update();
@@ -457,6 +457,124 @@ function museum(canvas) {
       const holder = new THREE.Mesh(new THREE.BoxGeometry(.4, .1, .3), new THREE.MeshStandardMaterial({color: 0x3a2213})); holder.position.set(0, .05, 0);
       group.add(disk, rim, relief, holder);
       return {group, reset: () => { relief.rotation.y = 0; }, play: () => {}, update: (t) => { relief.rotation.y = Math.sin(t * 1.4) * .6 * Math.max(0, 1 - t / 6); relief.position.z = .1 + Math.sin(t * 3) * .03; return t < 6; }};
+    },
+    balbal() {
+      // Балбал тас: түркі дәуірінің тас мүсіні, қолында ыдыс ұстаған адам бейнесі
+      const group = new THREE.Group();
+      const tex = canvasTexture(512, 1024, (g, w, h) => {
+        g.fillStyle = "#8d8a80"; g.fillRect(0, 0, w, h);
+        for (let i = 0; i < 9000; i++) { const v = 100 + Math.random() * 90 | 0; g.fillStyle = `rgba(${v},${v - 4},${v - 12},.35)`; g.fillRect(Math.random() * w, Math.random() * h, 2 + Math.random() * 3, 2 + Math.random() * 3); }
+        for (let i = 0; i < 40; i++) { g.fillStyle = `rgba(${150 + Math.random() * 40 | 0},${140 + Math.random() * 30 | 0},90,.25)`; g.beginPath(); g.arc(Math.random() * w, Math.random() * h, 6 + Math.random() * 26, 0, 7); g.fill(); }
+        g.strokeStyle = "#4b4740"; g.lineCap = "round"; g.lineJoin = "round";
+        const cx = w * .25; // беті алдыңғы жағында (u ≈ .25)
+        g.lineWidth = 6; g.beginPath(); g.ellipse(cx, h * .2, 70, 92, 0, 0, 7); g.stroke();                 // бет сызығы
+        g.lineWidth = 7; g.beginPath(); g.moveTo(cx - 52, h * .17); g.quadraticCurveTo(cx - 30, h * .155, cx - 10, h * .17); g.moveTo(cx + 10, h * .17); g.quadraticCurveTo(cx + 30, h * .155, cx + 52, h * .17); g.stroke(); // қастар
+        g.lineWidth = 5; g.beginPath(); g.ellipse(cx - 30, h * .185, 12, 5, 0, 0, 7); g.ellipse(cx + 30, h * .185, 12, 5, 0, 0, 7); g.stroke(); // көздер
+        g.beginPath(); g.moveTo(cx, h * .18); g.lineTo(cx - 6, h * .225); g.lineTo(cx + 6, h * .228); g.stroke();      // мұрын
+        g.lineWidth = 6; g.beginPath(); g.moveTo(cx - 34, h * .245); g.quadraticCurveTo(cx, h * .232, cx + 34, h * .245); g.stroke(); // мұрт
+        g.lineWidth = 7; g.beginPath(); g.moveTo(cx - 95, h * .44); g.quadraticCurveTo(cx - 40, h * .5, cx - 8, h * .47); g.stroke();  // оң қол
+        g.beginPath(); g.moveTo(cx - 8, h * .43); g.lineTo(cx + 18, h * .43); g.lineTo(cx + 14, h * .5); g.lineTo(cx - 4, h * .5); g.closePath(); g.stroke(); // ыдыс
+        g.beginPath(); g.moveTo(cx + 95, h * .44); g.quadraticCurveTo(cx + 70, h * .55, cx + 60, h * .6); g.stroke();   // сол қол
+        g.lineWidth = 9; g.beginPath(); g.moveTo(cx - 100, h * .6); g.lineTo(cx + 100, h * .6); g.stroke();             // белдік
+        g.lineWidth = 6; g.beginPath(); g.moveTo(cx + 50, h * .6); g.lineTo(cx + 62, h * .78); g.stroke();             // қылыш
+      });
+      const prof = [];
+      for (let i = 0; i <= 40; i++) { const t = i / 40, y = t * 1.9; let r = .34; if (t > .72) r = .34 * Math.sqrt(Math.max(0, 1 - Math.pow((t - .72) / .28, 2))) + .02; if (t > .66 && t < .72) r = .3; prof.push(new THREE.Vector2(r * (1 - t * .08), y)); }
+      const geo = new THREE.LatheGeometry(prof, 48, -Math.PI / 2, Math.PI * 2);
+      const stone = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({map: tex, bumpMap: tex, bumpScale: 6, roughness: .95}));
+      stone.scale.z = .62; stone.castShadow = true; stone.receiveShadow = true;
+      group.add(stone);
+      const rocks = new THREE.Group(), rockMat = new THREE.MeshStandardMaterial({color: 0x6f6a60, roughness: 1, flatShading: true});
+      for (let i = 0; i < 22; i++) { const a = i / 22 * Math.PI * 2, r = .55 + Math.random() * .25; const m = new THREE.Mesh(new THREE.DodecahedronGeometry(.07 + Math.random() * .07, 0), rockMat); m.position.set(Math.cos(a) * r, .05, Math.sin(a) * r); m.rotation.set(Math.random() * 3, Math.random() * 3, 0); m.castShadow = true; rocks.add(m); }
+      group.add(rocks);
+      return {group, reset: () => { stone.rotation.y = 0; }, play: () => {}, update: (t) => { stone.rotation.y = Math.sin(t * 1.2) * .9 * Math.max(0, 1 - t / 6); return t < 6; }};
+    },
+    tamgaly() {
+      // Тамғалы петроглифтері: күнбасты бейне, өгіздер мен жылқылар (қола дәуірі)
+      const group = new THREE.Group();
+      const tex = canvasTexture(1024, 768, (g, w, h) => {
+        const grad = g.createLinearGradient(0, 0, w, h); grad.addColorStop(0, "#3d2a1d"); grad.addColorStop(1, "#24170f"); g.fillStyle = grad; g.fillRect(0, 0, w, h);
+        for (let i = 0; i < 14000; i++) { const v = 40 + Math.random() * 50 | 0; g.fillStyle = `rgba(${v + 20},${v},${v - 10},.35)`; g.fillRect(Math.random() * w, Math.random() * h, 2, 2); }
+        // шекілеп қашалған нүктелер (петроглиф техникасы)
+        const peck = (pts, step = 7) => {
+          g.fillStyle = "#c9a37a";
+          for (let i = 1; i < pts.length; i++) { const [x0, y0] = pts[i - 1], [x1, y1] = pts[i]; const n = Math.max(1, Math.hypot(x1 - x0, y1 - y0) / step); for (let k = 0; k <= n; k++) { const x = x0 + (x1 - x0) * k / n + (Math.random() - .5) * 3, y = y0 + (y1 - y0) * k / n + (Math.random() - .5) * 3; g.beginPath(); g.arc(x, y, 3.2 + Math.random() * 1.6, 0, 7); g.fill(); } }
+        };
+        const circle = (cx, cy, r) => { const pts = []; for (let i = 0; i <= 40; i++) pts.push([cx + Math.cos(i / 40 * 6.283) * r, cy + Math.sin(i / 40 * 6.283) * r]); peck(pts); };
+        // Күнбасты бейне
+        const sx = w * .5, sy = h * .28;
+        circle(sx, sy, 58); circle(sx, sy, 30);
+        for (let i = 0; i < 16; i++) { const a = i / 16 * 6.283; peck([[sx + Math.cos(a) * 66, sy + Math.sin(a) * 66], [sx + Math.cos(a) * 100, sy + Math.sin(a) * 100]]); }
+        peck([[sx, sy + 60], [sx, sy + 210]]); peck([[sx - 70, sy + 110], [sx, sy + 95], [sx + 70, sy + 110]]); peck([[sx - 70, sy + 110], [sx - 90, sy + 70]]); peck([[sx + 70, sy + 110], [sx + 90, sy + 70]]);
+        peck([[sx, sy + 210], [sx - 40, sy + 300], [sx - 70, sy + 300]]); peck([[sx, sy + 210], [sx + 40, sy + 300], [sx + 70, sy + 300]]);
+        // Өгіз
+        const bull = (x, y, s) => { peck([[x, y], [x + 120 * s, y], [x + 150 * s, y - 20 * s], [x + 170 * s, y - 10 * s]]); peck([[x + 150 * s, y - 20 * s], [x + 165 * s, y - 60 * s]]); peck([[x + 150 * s, y - 20 * s], [x + 130 * s, y - 62 * s]]); peck([[x, y], [x - 20 * s, y + 10 * s]]); peck([[x + 10 * s, y], [x + 5 * s, y + 70 * s]]); peck([[x + 40 * s, y], [x + 38 * s, y + 70 * s]]); peck([[x + 100 * s, y], [x + 100 * s, y + 70 * s]]); peck([[x + 125 * s, y], [x + 130 * s, y + 70 * s]]); peck([[x, y + 30 * s], [x + 130 * s, y + 30 * s]]); };
+        bull(w * .1, h * .62, 1); bull(w * .66, h * .72, .85);
+        // Жылқы
+        const horse = (x, y, s) => { peck([[x, y], [x + 110 * s, y], [x + 140 * s, y - 50 * s], [x + 160 * s, y - 45 * s]]); peck([[x, y], [x - 25 * s, y + 30 * s]]); for (const dx of [5, 30, 90, 110]) peck([[x + dx * s, y], [x + dx * s + 5, y + 65 * s]]); };
+        horse(w * .7, h * .3, .8);
+      });
+      // Тас: бедері тегіс емес, алдыңғы беті тегістеу
+      const shape = new THREE.Shape();
+      const pts = 14;
+      for (let i = 0; i <= pts; i++) { const a = i / pts * Math.PI * 2, r = 1 + (Math.sin(i * 2.7) * .12 + Math.cos(i * 1.3) * .08); const x = Math.cos(a) * r * 1.6, y = Math.sin(a) * r * 1.1; i ? shape.lineTo(x, y) : shape.moveTo(x, y); }
+      const geo = new THREE.ExtrudeGeometry(shape, {depth: .5, bevelEnabled: true, bevelThickness: .25, bevelSize: .22, bevelSegments: 4, curveSegments: 4});
+      // Алдыңғы беттің UV координаттары суретке сәйкес келуі үшін
+      const pos = geo.attributes.position, uv = geo.attributes.uv;
+      for (let i = 0; i < pos.count; i++) uv.setXY(i, (pos.getX(i) + 1.85) / 3.7, (pos.getY(i) + 1.35) / 2.7);
+      const rock = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({map: tex, bumpMap: tex, bumpScale: 3, roughness: .9}));
+      rock.position.set(0, 1.25, -.3); rock.rotation.x = -.12; rock.castShadow = true; rock.receiveShadow = true;
+      group.add(rock);
+      const sun = new THREE.PointLight(0xffb070, 0, 9, 1.2); group.add(sun);
+      return {group, reset: () => { sun.intensity = 0; }, play: () => {}, update: (t) => {
+        // Таң шапағы: жарық тастың бетінен баяу жылжиды
+        const k = Math.min(1, t / 7); sun.intensity = 30 * Math.sin(k * Math.PI); sun.position.set(-3 + 6 * k, .6 + 1.6 * Math.sin(k * Math.PI), 1.6);
+        return t < 7.5;
+      }};
+    },
+    kobyz() {
+      // Қыл қобыз: ысқышпен ойналатын екі ішекті аспап
+      const group = new THREE.Group();
+      const woodMat = new THREE.MeshStandardMaterial({color: 0x7a4524, roughness: .45, map: woodTexture()});
+      const skinMat = new THREE.MeshStandardMaterial({color: 0xd9c49a, roughness: .9, map: feltTexture("#d8c39a", ["#b59d6f", "#efe0bd"])});
+      const prof = []; for (let i = 0; i <= 24; i++) { const t = i / 24; prof.push(new THREE.Vector2(Math.sin(t * Math.PI) * .2 + .01, t * .62)); }
+      const body = new THREE.Mesh(new THREE.LatheGeometry(prof, 40, Math.PI, Math.PI), woodMat); body.scale.z = .7; body.castShadow = true;
+      // Шанақтың төменгі жартысы терімен жабылады, жоғарғысы ашық
+      const skinShape = new THREE.Shape(); prof.slice(0, 13).forEach((p, i) => i ? skinShape.lineTo(p.x, p.y) : skinShape.moveTo(p.x, p.y)); [...prof.slice(0, 13)].reverse().forEach((p) => skinShape.lineTo(-p.x, p.y));
+      const skin = new THREE.Mesh(new THREE.ShapeGeometry(skinShape), skinMat); skin.position.z = .001;
+      const neck = new THREE.Mesh(new THREE.BoxGeometry(.06, .4, .05), woodMat); neck.position.set(0, .8, -.02);
+      const headCurve = new THREE.CatmullRomCurve3([new THREE.Vector3(0, .98, -.02), new THREE.Vector3(0, 1.12, -.06), new THREE.Vector3(0, 1.2, -.16), new THREE.Vector3(0, 1.17, -.24)]);
+      const head = new THREE.Mesh(new THREE.TubeGeometry(headCurve, 16, .035, 8), woodMat);
+      const hair = new THREE.LineBasicMaterial({color: 0xe8e2d6});
+      const strings = [-.015, .015].map((x) => { const g = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(x, .08, .03), new THREE.Vector3(x, 1.0, .015)]); return new THREE.Line(g, hair); });
+      const bridge = new THREE.Mesh(new THREE.BoxGeometry(.07, .02, .03), new THREE.MeshStandardMaterial({color: 0x3a2213})); bridge.position.set(0, .2, .02);
+      const inst = new THREE.Group(); inst.add(body, skin, neck, head, bridge, ...strings);
+      inst.rotation.set(0, Math.PI, .12); inst.position.y = .2; group.add(inst);
+      // Ысқыш
+      const bowCurve = new THREE.CatmullRomCurve3([new THREE.Vector3(-.45, 0, 0), new THREE.Vector3(0, .07, 0), new THREE.Vector3(.45, 0, 0)]);
+      const bow = new THREE.Group();
+      bow.add(new THREE.Mesh(new THREE.TubeGeometry(bowCurve, 20, .012, 6), woodMat));
+      bow.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-.45, 0, 0), new THREE.Vector3(.45, 0, 0)]), hair));
+      bow.position.set(.05, .52, .08); bow.rotation.z = -.15; group.add(bow);
+      // Ысқышпен тартылатын дыбыс
+      let ac, voice;
+      const playSound = () => {
+        ac ||= new (window.AudioContext || window.webkitAudioContext)(); ac.resume();
+        const t0 = ac.currentTime, out = ac.createGain(); out.gain.setValueAtTime(0, t0); out.gain.linearRampToValueAtTime(.16, t0 + .3); out.gain.setValueAtTime(.16, t0 + 4.2); out.gain.linearRampToValueAtTime(0, t0 + 5);
+        const lp = ac.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 1800; lp.Q.value = 2;
+        const body = ac.createBiquadFilter(); body.type = "peaking"; body.frequency.value = 650; body.gain.value = 8;
+        lp.connect(body).connect(out).connect(ac.destination);
+        const notes = [[0, 196], [1.2, 220], [2.2, 196], [3.2, 174.6]];
+        for (const f of [1, 1.004]) {
+          const o = ac.createOscillator(); o.type = "sawtooth";
+          notes.forEach(([at, hz]) => o.frequency.setValueAtTime(hz * f, t0 + at));
+          const lfo = ac.createOscillator(), depth = ac.createGain(); lfo.frequency.value = 5.2; depth.gain.value = 2.2; lfo.connect(depth).connect(o.frequency);
+          o.connect(lp); o.start(t0); o.stop(t0 + 5.1); lfo.start(t0); lfo.stop(t0 + 5.1);
+        }
+        const drone = ac.createOscillator(); drone.type = "sawtooth"; drone.frequency.value = 146.8; const dg = ac.createGain(); dg.gain.value = .5; drone.connect(dg).connect(lp); drone.start(t0); drone.stop(t0 + 5.1);
+        voice = true;
+      };
+      return {group, reset: () => { bow.position.x = .05; voice = false; }, play: () => playSound(), update: (t) => { bow.position.x = .05 + Math.sin(t * 2.2) * .28; bow.position.y = .52 + Math.sin(t * 4.4) * .01; return t < 5; }};
     }
   };
 
@@ -471,14 +589,24 @@ function museum(canvas) {
     }
     // Бағдарламалық рендерде тек өзгеріс болғанда саламыз
     if (!software || dirty || playing || controls.autoRotate) { renderer.render(scene, camera); dirty = false; }
-    if (software && !playing) { running = false; return; }
+    // Бағдарламалық рендерде көрініс секундына бір рет жаңарады (жоғалған кадрды қалпына келтіру үшін)
+    if (software && !playing) { running = false; clearTimeout(frame.idle); frame.idle = setTimeout(() => { if (visible) { dirty = true; running = true; requestAnimationFrame(frame); } }, 1000); return; }
     requestAnimationFrame(frame);
   }
   const wake = () => { dirty = true; if (!running && visible) { running = true; clock.getDelta(); requestAnimationFrame(frame); } };
   if (software) { canvas.addEventListener("pointermove", (e) => { if (e.buttons) wake(); }); canvas.addEventListener("wheel", wake, {passive: true}); canvas.addEventListener("pointerdown", wake); canvas.addEventListener("pointerup", wake); }
   let visible = false;
   const stage = canvas.parentElement;
-  new IntersectionObserver(([e]) => { visible = e.isIntersecting; const was = running; running = visible; if (running && !was) { clock.getDelta(); requestAnimationFrame(frame); } }, {rootMargin: "200px"}).observe(stage);
+  // Бақылаушыға сілтемені сақтаймыз: әйтпесе браузер оны жинап тастауы мүмкін
+  // Көрінуін IntersectionObserver-мен қатар scroll арқылы да тексереміз: жылдам айналдырғанда бақылаушы кейде кешігеді
+  const setVisible = (v) => { if (v === visible) return; visible = v; const was = running; running = visible; if (running && !was) { dirty = true; clock.getDelta(); requestAnimationFrame(frame); } };
+  const measure = () => { const r = stage.getBoundingClientRect(); setVisible(r.bottom > -200 && r.top < innerHeight + 200); };
+  const stageObserver = new IntersectionObserver(() => measure(), {rootMargin: "200px"});
+  stageObserver.observe(stage);
+  let scrollTick = 0;
+  addEventListener("scroll", () => { if (!scrollTick) scrollTick = requestAnimationFrame(() => { scrollTick = 0; measure(); }); }, {passive: true});
+  addEventListener("resize", measure);
+  measure();
   document.addEventListener("dala:exhibit", (e) => { show(e.detail); wake(); });
   show(window.DALA_PENDING_EXHIBIT || "yurt");
   // Киіз үйді алғаш ашқанда жиналу анимациясын бірден көрсету

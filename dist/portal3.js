@@ -203,6 +203,11 @@
   function route() {
     const id = decodeURIComponent(location.hash.slice(1));
     if (id.startsWith("history-")) openReader(id.slice(8));
+    if (id.startsWith("culture-")) {
+      const b = [...topics.querySelectorAll("button")][culture.findIndex((c) => c[0] === id.slice(8))];
+      if (b) { b.click(); $("culture").scrollIntoView({block: "start"}); }
+    }
+    if (id.startsWith("museum-")) { selectExhibit(id.slice(7)); $("museum").scrollIntoView({block: "start"}); }
     if (id.startsWith("place-")) {
       const mapTab = $("t-map");
       mapTab.click();

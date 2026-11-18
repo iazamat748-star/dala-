@@ -21,7 +21,24 @@
   let cfg;
   try { cfg = {...DEFAULTS, ...JSON.parse(localStorage.getItem(KEY))}; } catch { cfg = {...DEFAULTS}; }
   const save = () => { try { localStorage.setItem(KEY, JSON.stringify(cfg)); } catch {} };
-  const history = []; // {role, content}
+  // Тарихи тұлғалар: [id, аты, жылдары, кім, байланысты бөлім]
+  const PERSONAS = [
+    ["guide", "Дала мұрасы гиді", "", "Тарих пен мәдениет бойынша жалпы гид", ""],
+    ["abai", "Абай Құнанбайұлы", "1845–1904", "ақын, ойшыл, аудармашы, «Қара сөздердің» авторы", "resistance"],
+    ["abylai", "Абылай хан", "1711–1781", "1771 жылы үш жүздің ханы болып сайланған мемлекет қайраткері", "diplomacy"],
+    ["tole", "Төле би", "1663–1756", "Ұлы жүздің биі, шешен әрі әділ төреші", "law"],
+    ["farabi", "Әбу Насыр әл-Фараби", "шамамен 870–950", "Фараб (Отырар) өңірінен шыққан философ, «Екінші ұстаз»", "cities"],
+    ["kurmangazy", "Құрманғазы Сағырбайұлы", "1823–1896", "ұлы күйші, «Сарыарқа» мен «Адай» күйлерінің авторы", ""],
+    ["bokeikhan", "Әлихан Бөкейхан", "1866–1937", "Алаш Орда үкіметінің төрағасы", "alash"],
+    ["tomyris", "Томирис", "б.з.б. VI ғасыр", "сақ-массагет патшайымы", "saka"]
+  ];
+  let persona = (() => { try { return localStorage.getItem(KEY + "-persona") || "guide"; } catch { return "guide"; } })();
+  if (!PERSONAS.some((p) => p[0] === persona)) persona = "guide";
+  const P = () => PERSONAS.find((p) => p[0] === persona);
+  const HKEY = () => `${KEY}-chat-${persona}`;
+  const loadHistory = () => { try { return JSON.parse(localStorage.getItem(HKEY())) || []; } catch { return []; } };
+  const history = loadHistory(); // {role, content}
+  const saveHistory = () => { try { localStorage.setItem(HKEY(), JSON.stringify(history.slice(-30))); } catch {} };
 
   /* ---------- Сайт деректерінен контекст ---------- */
   const A = () => window.DALA_ASSISTANT;
@@ -96,7 +113,14 @@
 
   /* ---------- Интернетсіз жауап ---------- */
   function offlineAnswer(q) {
-    const ctx = context(q);
+    const ctx = context(persona === "guide" ? q : `${q} ${P()[1]}`);
+    if (persona !== "guide") {
+      const [, name, years, who] = P();
+      const person = (window.DALA_PEOPLE || []).find((x) => x[0].startsWith(name.split(" ")[0]));
+      const intro = `Мен — ${name} (${years}). ${person ? person[3] : who[0].toLocaleUpperCase("kk") + who.slice(1) + "."}`;
+      const rest = ctx.filter((c) => !c.title.startsWith(name.split(" ")[0])).slice(0, 2);
+      return {text: intro + (rest.length ? "\n\nСенің сұрағыңа қатысты деректер:\n" + rest.map((c) => `- **${c.title}:** ${c.text.slice(0, 180).replace(/\s\S*$/, "")}…`).join("\n") : "") + "\n\nТұлғамен еркін сөйлесу үшін «Гидті баптау» арқылы тілдік модельді қос.", refs: ctx};
+    }
     if (!ctx.length) return {text: {kk: "Бұл сұраққа сайт деректерінен жауап таппадым. Тұлғаның атын, жылды не тақырыпты нақтырақ жазып көр. Толық жауап алу үшін «Гидті баптау» арқылы тілдік модельді қос.", ru: "В материалах сайта ответа не нашлось. Уточните имя, год или тему. Для полноценных ответов на любом языке подключите языковую модель в «Настроить гида».", en: "I couldn't find an answer in this site's material. Try a name, a year or a topic. To get full answers in any language, connect a language model in Guide settings."}[guessLang(q)] || "", refs: []};
     const top = ctx[0];
     let text = `**${top.title}**\n\n${top.text}`;
@@ -106,7 +130,15 @@
   }
 
   /* ---------- Тілдік модельдер ---------- */
-  const SYSTEM = (ctx) => `You are "Dala Murasy" — a friendly expert guide to the history and culture of Kazakhstan on a museum-style website.
+  const SYSTEM = (ctx) => persona !== "guide" ? `You are role-playing ${P()[1]} (${P()[2]}), ${P()[3]}, in a conversation on "Dala Murasy", a website about the history and culture of Kazakhstan.
+Rules:
+- Speak in the first person, in the voice and worldview of ${P()[1]}, but always answer in the same language as the user's latest message.
+- Stay faithful to what historians actually know about your life and times. Do not invent quotations and present them as real; if you paraphrase your known ideas or works, say so. If asked about events after your death, say you did not live to see them and answer briefly as a modern narrator would.
+- Keep replies to 2–4 short paragraphs. Be warm, dignified and true to the era.
+- Your first reply in a conversation should make clear, in one short phrase, that this is an imaginative reconstruction.
+
+Site excerpts:
+${ctx.map((c, i) => `[${i + 1}] ${c.title}: ${c.text}`).join("\n") || "(no close match on the site)"}` : `You are "Dala Murasy" — a friendly expert guide to the history and culture of Kazakhstan on a museum-style website.
 Rules:
 - Always answer in the same language as the user's latest message (Kazakh, Russian, English, Turkish, Chinese, Arabic or any other).
 - Be accurate. Prefer the site excerpts below when they are relevant; add well-established historical knowledge when needed. If historians disagree or you are unsure, say so briefly. Never invent dates, quotes or sources.
@@ -173,13 +205,14 @@ ${ctx.map((c, i) => `[${i + 1}] ${c.title}: ${c.text}`).join("\n") || "(no close
     const ctx = context(q);
     if (!online()) {
       const r = offlineAnswer(q);
+      history.push({role: "user", content: q}, {role: "assistant", content: r.text}); saveHistory();
       setTimeout(() => finish(m, r.text, r.refs, t("guide.offline")), 250);
       return;
     }
     const ctrl = new AbortController(); busy = ctrl;
     try {
       const text = await askModel(q, ctx, (partial) => { rich(m, partial); log.scrollTop = log.scrollHeight; }, ctrl.signal);
-      history.push({role: "user", content: q}, {role: "assistant", content: text});
+      history.push({role: "user", content: q}, {role: "assistant", content: text}); saveHistory();
       finish(m, text || "…", ctx, providerName());
     } catch (e) {
       if (e.name === "AbortError") return;
@@ -203,16 +236,34 @@ ${ctx.map((c, i) => `[${i + 1}] ${c.title}: ${c.text}`).join("\n") || "(no close
       r.start();
     });
   }
-  $("guide-clear").addEventListener("click", () => { history.length = 0; log.replaceChildren(); greet(); });
+  $("guide-clear").addEventListener("click", () => { history.length = 0; saveHistory(); log.replaceChildren(); greet(); });
+  // Тұлғаны таңдау
+  const side = document.querySelector(".chat-side");
+  const pickWrap = make("div", null, "field persona-pick");
+  const pick = make("select", null, null, {id: "persona"});
+  PERSONAS.forEach(([id, name, years]) => { const o = make("option", years ? `${name} (${years})` : name, null, {value: id}); o.selected = id === persona; pick.append(o); });
+  pickWrap.append(make("label", "Кіммен сөйлесесің?", null, {for: "persona"}), pick);
+  side.insertBefore(pickWrap, $("suggest"));
+  pick.addEventListener("change", () => {
+    persona = pick.value;
+    try { localStorage.setItem(KEY + "-persona", persona); } catch {}
+    history.length = 0; history.push(...loadHistory());
+    log.replaceChildren(); restore(); suggestions();
+  });
+  function restore() {
+    if (!history.length) { greet(); return; }
+    for (const msg of history) { if (msg.role === "user") bubble("user", msg.content); else { const m = bubble("bot", ""); finish(m, msg.content, [], ""); } }
+  }
   const SUGGEST = {
     kk: ["Қазақ хандығы қашан және қалай құрылды?", "Киіз үй қалай жиналады?", "Абылай хан кім болған?", "Күй дегеніміз не?", "Алаш қозғалысы туралы айтшы"],
     ru: ["Как образовалось Казахское ханство?", "Как устроена юрта?", "Кем был Абылай хан?", "Что такое кюй?", "Расскажи о движении Алаш"],
     en: ["How did the Kazakh Khanate begin?", "How is a yurt put together?", "Who was Abylai Khan?", "What is a küi?", "Tell me about the Alash movement"]
   };
+  const PERSONA_Q = {kk: ["Өміріңнің ең маңызды кезеңі қандай болды?", "Сен өмір сүрген заман қандай еді?", "Бүгінгі жастарға не айтар едің?"], ru: ["Какой период твоей жизни был самым важным?", "Каким было твоё время?", "Что бы ты сказал сегодняшней молодёжи?"], en: ["What was the most important time of your life?", "What was your era like?", "What would you tell young people today?"]};
   function suggestions() {
     const box = $("suggest");
     box.replaceChildren();
-    for (const s of SUGGEST[lang()] || SUGGEST.kk) { const b = make("button", s, null, {type: "button"}); b.addEventListener("click", () => ask(s)); box.append(b); }
+    for (const s of (persona === "guide" ? SUGGEST : PERSONA_Q)[lang()] || SUGGEST.kk) { const b = make("button", s, null, {type: "button"}); b.addEventListener("click", () => ask(s)); box.append(b); }
   }
   function status() {
     const pill = $("guide-status");
@@ -220,6 +271,12 @@ ${ctx.map((c, i) => `[${i + 1}] ${c.title}: ${c.text}`).join("\n") || "(no close
     pill.querySelector("span").textContent = online() ? `${t("guide.online")}: ${providerName()}` : t("guide.offline");
   }
   function greet() {
+    if (persona !== "guide") {
+      const [, name, years, who] = P();
+      const text = {kk: `Сәлем! Мен — ${name} (${years}), ${who}. Бұл — тарихи деректерге сүйенген көркем сұхбат. Не сұрағың келеді?`, ru: `Здравствуй! Я — ${name} (${years}). Это художественная беседа по историческим источникам. О чём хочешь спросить?`, en: `Greetings! I am ${name} (${years}). This is an imaginative conversation grounded in history. What would you like to ask?`}[lang()];
+      const m = bubble("bot", ""); finish(m, text, [], online() ? providerName() : t("guide.offline"));
+      return;
+    }
     const text = {kk: "Сәлем! Мен «Дала мұрасы» гидімін. Қазақстан тарихы мен мәдениеті туралы кез келген тілде сұрай бер.", ru: "Сәлем! Я гид «Дала мұрасы». Спрашивайте об истории и культуре Казахстана на любом языке.", en: "Sälem! I'm the Dala Murasy guide. Ask me about Kazakhstan's history and culture in any language."}[lang()];
     const m = bubble("bot", ""); finish(m, text, [], online() ? providerName() : t("guide.offline"));
   }
@@ -296,6 +353,6 @@ ${ctx.map((c, i) => `[${i + 1}] ${c.title}: ${c.text}`).join("\n") || "(no close
     dialog.append(body);
   }
 
-  suggestions(); status(); greet();
+  suggestions(); status(); restore();
   window.DALA_GUIDE = {ask, get config() { return {...cfg, anthropicKey: cfg.anthropicKey ? "•••" : "", openaiKey: cfg.openaiKey ? "•••" : ""}; }};
 })();
